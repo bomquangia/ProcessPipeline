@@ -1,0 +1,16 @@
+{
+  "GSE123139": {
+    "perplexity": 30,
+    "dims": 2,
+    "seed": 2409,
+    "print_sanity_check": true,
+    "correct_method": "none",
+    "min.cells": 0,
+    "min.features": 0,
+    "n_variable_features": 2000,
+    "run_batch_subcluster": false
+  },
+  "GSE124395": {
+    "correct_method": "none"
+  } 
+}
