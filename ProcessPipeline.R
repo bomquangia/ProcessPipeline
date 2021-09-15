@@ -2,9 +2,8 @@ library(rhdf5)
 
 readMtxFromThaoH5 <- function(filepath) {
   print(filepath)
-  
   ## TODO: Check file path exist
-  
+
   counts <- Matrix::sparseMatrix(
     j = rhdf5::h5read(filepath, "/indices", drop=TRUE) + 1, # Why j, not i? How to differentiate from j and i?
     p = rhdf5::h5read(filepath, "/indptr", drop=TRUE),
@@ -78,6 +77,9 @@ SanityCheck <- function(filepath) {
   print(features[1:5])
   print("Sample barcodes")
   print(barcodes[1:5])
+  batch <- rhdf5::h5read(filepath, "/batch", drop=TRUE)
+  print(paste0("Number of batches: ", length(unique(batch))))
+  print(unique(batch))
 }
 
 GetStudyId <- function(filepath) {
@@ -92,19 +94,41 @@ GetStudyId <- function(filepath) {
   # compare barcodes.tsv
   
 #}
-RunPipeline <- function(filepath, param) {
-  SanityCheck(filepath)
+
+CombineParam <- function(default.params, study.params) {
+  # USAGE: Enable user to specify params to be used for a particular study, if differs from the global params
+  # Example
+  # global_param <- list(dims = 2, perplexity = 10, output.dir = output.dir, seed = 2409, correct_method='harmony')
+  # study_param <- list(dims = 3, seed = 2409, correct_method='none')
+  # CombineParam(global_param, study_param) --> list(dims = 3, seed = 2409, correct_method='none')
+
+  if (is.null(study.params)) {
+    study.params = list()
+  }
+  for (key in names(default.params)) {
+    print(key)
+    if (is.null(study.params[[key]])) {
+      study.params[[key]] <- default.params[[key]]
+    }
+  }
+  return(study.params)
+}
+
+RunPipeline <- function(study.id, arg) {
+  filepath <- ConnectPath(arg$raw.path, paste0(study.id, '.hdf5'))
+  output.path <- ConnectPath(arg$output.dir, paste0(study.id, '.bcs'))
   
-  # Auto parse study id from filepath if not provided in param
-  study.id <- ifelse(!is.null(param$study.id), param.study.id, GetStudyId(filepath))
-  output.path <- ConnectPath(param$output.dir, paste0(study.id, '.bcs'))
-  # Check if `filepath`.bcs already exists
   if (file.exists(output.path)) {
     print(paste("This study has already been process:", study.id))
     return(FALSE)
   }
+  SanityCheck(filepath)
+  # browser()
+  params <- CombineParam(arg$default.params, arg$all.study.params[[study.id]])
+  # Auto parse study id from filepath if not provided in param
+  # study.id <- ifelse(!is.null(param$study.id), param.study.id, GetStudyId(filepath))
+  # Check if `filepath`.bcs already exists
   
-
   count.data <- readMtxFromThaoH5(filepath)
   
   # If have batches --> remove batch effect with harmony
@@ -112,18 +136,18 @@ RunPipeline <- function(filepath, param) {
   hasMultiBatch <- unique(study_info$batch) > 1
 
   # Run PCA
-  obj <- Seurat::CreateSeuratObject(count.data, min.cells=0, min.features=0)
+  obj <- Seurat::CreateSeuratObject(count.data, min.cells=params$min.cells, min.features=params$min.features)
 
   obj <- Seurat::NormalizeData(obj)
-  obj <- Seurat::FindVariableFeatures(obj, nfeatures=min(2000, nrow(obj)))
+  obj <- Seurat::FindVariableFeatures(obj, nfeatures=min(params$n_variable_features, nrow(obj)))
   obj <- Seurat::ScaleData(obj)
   obj <- Seurat::RunPCA(obj)
   
   # If have batches --> remove batch effect with harmony
   study_info <- getInfo(filepath)
   hasMultiBatch <- length(unique(study_info$batch)) > 1
-  key <- 'pca' # HTODO: Handle case when key = 'harmony' for multibatch study
-  if (hasMultiBatch) { # Should check whether user want to run batch-correction for this particular study or not
+  key <- 'pca' # TODO: Handle case when key = 'harmony' for multibatch study
+  if (hasMultiBatch && params$correct_method %in% c("mnn", "harmony")) { # Should check whether user want to run batch-correction for this particular study or not
     print(paste("This study has multibatch:", study.id))
     # browser()
     batch <- rhdf5::h5read(filepath, "/batch", drop=TRUE)
@@ -136,14 +160,29 @@ RunPipeline <- function(filepath, param) {
   mat <- mat[, 1:min(ncol(mat), 50)]
   
   # Run TSNE and UMAP
-  tsne.embeddings <- RunTSNE(mat, param)
+  tsne.embeddings <- RunTSNE(mat, params)
   obj@reductions[['tSNE']] <- Seurat::CreateDimReducObject(embeddings=tsne.embeddings, assay="RNA", key=paste0(key, "_"))
   
-  umap.embeddings <- RunUMAP(mat, param) 
+  umap.embeddings <- RunUMAP(mat, params) 
   obj@reductions[['UMAP']] <- Seurat::CreateDimReducObject(embeddings=umap.embeddings, assay="RNA", key=paste0(key, "_"))
   
   # Run Graph-based cluster?
-  
+  if (params$correct_method %in% c("mnn", "harmony") && params$correct_method %in% names(obj@reductions)) {
+    n.dim.use <- min(30, ncol(obj@reductions[[params$correct_method]]))
+    obj <- Seurat::FindNeighbors(obj, dims = 1:n.dim.use, reduction = params$correct_method)
+  } else {
+    n.dim.use <- min(30, ncol(obj@reductions$pca))
+    obj <- Seurat::FindNeighbors(obj, dims = 1:n.dim.use, reduction = "pca")
+  }
+  print("Running Louvain")
+  obj <- Seurat::FindClusters(obj, verbose = FALSE)
+  obj@meta.data$bioturing_graph <- as.numeric(obj@meta.data$seurat_clusters)
+  obj@meta.data$bioturing_graph <- factor(
+    paste("Cluster", obj@meta.data$bioturing_graph),
+    levels = paste("Cluster", sort(unique(obj@meta.data$bioturing_graph)))
+  )
+  # TODO: Remove metadata: bioturing_graph and RNA_snn_res.0.8
+  ## 
   # Import metadata
   # Check that new and old barcodes is the same, if yes, simply copy all metalist file
   # if not, this is gonna be mind-bending
