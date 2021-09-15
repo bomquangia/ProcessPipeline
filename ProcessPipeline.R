@@ -93,24 +93,45 @@ GetStudyId <- function(filepath) {
   
 #}
 RunPipeline <- function(filepath, param) {
-  count.data <- readMtxFromThaoH5(filepath)
+  SanityCheck(filepath)
   
   # Auto parse study id from filepath if not provided in param
   study.id <- ifelse(!is.null(param$study.id), param.study.id, GetStudyId(filepath))
+  output.path <- ConnectPath(param$output.dir, paste0(study.id, '.bcs'))
+  # Check if `filepath`.bcs already exists
+  if (file.exists(output.path)) {
+    print(paste("This study has already been process:", study.id))
+    return(FALSE)
+  }
+  
+
+  count.data <- readMtxFromThaoH5(filepath)
   
   # If have batches --> remove batch effect with harmony
   study_info <- getInfo(filepath)
   hasMultiBatch <- unique(study_info$batch) > 1
+
   # Run PCA
   obj <- Seurat::CreateSeuratObject(count.data, min.cells=0, min.features=0)
+
   obj <- Seurat::NormalizeData(obj)
   obj <- Seurat::FindVariableFeatures(obj, nfeatures=min(2000, nrow(obj)))
   obj <- Seurat::ScaleData(obj)
   obj <- Seurat::RunPCA(obj)
-  obj <- Seurat::RunTSNE(obj, seed.use = 2409)
   
-  
+  # If have batches --> remove batch effect with harmony
+  study_info <- getInfo(filepath)
+  hasMultiBatch <- length(unique(study_info$batch)) > 1
   key <- 'pca' # HTODO: Handle case when key = 'harmony' for multibatch study
+  if (hasMultiBatch) { # Should check whether user want to run batch-correction for this particular study or not
+    print(paste("This study has multibatch:", study.id))
+    # browser()
+    batch <- rhdf5::h5read(filepath, "/batch", drop=TRUE)
+    obj <- Seurat::AddMetaData(obj, batch, col.name = 'batch')
+    obj <- harmony::RunHarmony(obj, "batch", plot_convergence = FALSE, verbose = TRUE, epsilon.harmony = -Inf, max.iter.harmony = 30)
+    key <- 'harmony'
+  }
+  
   mat <- obj@reductions[[key]]@cell.embeddings
   mat <- mat[, 1:min(ncol(mat), 50)]
   
@@ -124,9 +145,10 @@ RunPipeline <- function(filepath, param) {
   # Run Graph-based cluster?
   
   # Import metadata
-  #Check that new and old barcodes is the same, if yes, simply copy all metalist file
+  # Check that new and old barcodes is the same, if yes, simply copy all metalist file
+  # if not, this is gonna be mind-bending
   
-  #if not, this is gonna be mind-bending
   #
-  rBCS::ExportSeuratObject(obj, ConnectPath(param$output.dir, paste0(study.id, '.bcs')), overwrite=TRUE)
+  rBCS::ExportSeuratObject(obj, output.path, overwrite=FALSE)
 }
+
