@@ -1,27 +1,46 @@
 library(rhdf5)
 
 readMtxFromThaoH5 <- function(filepath) {
-  print(filepath)
+  # print(filepath)
   ## TODO: Check file path exist
 
   counts <- Matrix::sparseMatrix(
-    j = rhdf5::h5read(filepath, "/indices", drop=TRUE) + 1, # Why j, not i? How to differentiate from j and i?
-    p = rhdf5::h5read(filepath, "/indptr", drop=TRUE),
-    x = rhdf5::h5read(filepath, "/data", drop=TRUE),
-    dims = rhdf5::h5read(filepath, "/shape", drop=TRUE),
+    j = readThaoH5Slot(filepath, "/indices") + 1, # Why j, not i? How to differentiate from j and i?
+    p = readThaoH5Slot(filepath, "/indptr"),
+    x = readThaoH5Slot(filepath, "/data"),
+    dims = readThaoH5Slot(filepath, "/shape"),
     dimnames = list(
-      rhdf5::h5read(filepath, "/features", drop=TRUE),
-      rhdf5::h5read(filepath, "/barcodes", drop=TRUE)
+      readThaoH5Slot(filepath, "/features"),
+      readThaoH5Slot(filepath, "/barcodes")
     )
-  )  
+  )
   print(dim(counts))
   return(counts)
 }
 
+readThaoH5Slot <- function(filepath, slot) {
+  return(rhdf5::h5read(filepath, slot, drop=TRUE))
+}
+
+getMetadata <- function(filepath) {
+  h5Info <-  rhdf5::h5ls(filepath)
+  metaIdx <- h5Info$group == "/original_metadata"
+  
+  if (sum(metaIdx) == 0) {
+    return(NULL)
+  }
+  metaName <- h5Info$name[metaIdx]
+  meta_data <- lapply(paste0("/original_metadata/", metaName) , readThaoH5Slot, filepath=filepath) 
+  names(meta_data) <- metaName
+  return(meta_data)
+}
+
 getInfo <- function(filepath) {
-  batch <- rhdf5::h5read(filepath, "/batch", drop=TRUE)
-  species <- rhdf5::h5read(filepath, "/species", drop=TRUE)
-  return(list(batch=batch, species = species))
+  batch <- readThaoH5Slot(filepath, "/batch")
+  species <- readThaoH5Slot(filepath, "/species")
+  features <- readThaoH5Slot(filepath, '/features') 
+  hasADT <- length(grep("ADT", features)) > 0 
+  return(list(batch=batch, species = species, hasADT=hasADT))
 }
 
 WriteSpMt <- function(filePath, groupName, mat) {
@@ -66,34 +85,40 @@ RunUMAP <- function(data, param) {
   return(uwot::umap(data, n_neighbors = param$perplexity, n_components = param$dims))
 }
 
+NeedBatchCorrection <- function(study_id) {
+  info <- RunDiagnostics(study_id)
+  correct_method <- info$correct_method
+  original_n_batch <- info$original_n_batch
+  if (original_n_batch == 1) {
+    return(FALSE)
+  }
+  if (is.null(correct_method) || correct_method %in% c("cca", "harmony", "mnn")) {
+    return(TRUE)
+  }
+  return(FALSE)
+}
+
 SanityCheck <- function(filepath) {
-  dims = rhdf5::h5read(filepath, "/shape", drop=TRUE)
+  dims = readThaoH5Slot(filepath, "/shape")
   print("Dimensions")
   print(dims)
   
-  features <- rhdf5::h5read(filepath, "/features", drop=TRUE)
-  barcodes <- rhdf5::h5read(filepath, "/barcodes", drop=TRUE)
+  features <- readThaoH5Slot(filepath, "/features")
+  barcodes <- readThaoH5Slot(filepath, "/barcodes")
   print("Example features")
   print(features[1:5])
   print("Example barcodes")
   print(barcodes[1:5])
-  batch <- rhdf5::h5read(filepath, "/batch", drop=TRUE)
+  batch <- readThaoH5Slot(filepath, "/batch")
   print(paste0("Number of batches: ", length(unique(batch))))
   print(unique(batch))
 }
 
 GetStudyId <- function(filepath) {
   # filepath must be a path to a hdf5 file
-  study.id <- sub('\\.hdf5$', '', basename(filepath)) 
-  return(study.id)
+  study_id <- sub('\\.hdf5$', '', basename(filepath)) 
+  return(study_id)
 }
-
-#CompareBarcodes <- function(obj, ) {
-  #}
-#AddOldMetadata <- function(old.study.path) {
-  # compare barcodes.tsv
-  
-#}
 
 CombineParam <- function(default.params, study.params) {
   # USAGE: Enable user to specify params to be used for a particular study, if differs from the global params
@@ -106,7 +131,6 @@ CombineParam <- function(default.params, study.params) {
     study.params = list()
   }
   for (key in names(default.params)) {
-    print(key)
     if (is.null(study.params[[key]])) {
       study.params[[key]] <- default.params[[key]]
     }
@@ -114,41 +138,59 @@ CombineParam <- function(default.params, study.params) {
   return(study.params)
 }
 
-RunPipeline <- function(study.id, arg) {
-  filepath <- ConnectPath(arg$raw.path, paste0(study.id, '.hdf5'))
-  output.path <- ConnectPath(arg$output.dir, paste0(study.id, '.bcs'))
+RunPipeline <- function(study_id, arg) {
+  filepath <- ConnectPath(arg$raw_path, paste0(study_id, '.hdf5'))
+  output_path <- ConnectPath(arg$output.dir, paste0(study_id, '.bcs'))
   
-  if (file.exists(output.path)) {
-    print(paste("This study has already been process:", study.id))
+  if (file.exists(output_path)) {
+    print(paste("This study has already been process:", study_id))
     return(FALSE)
   }
   SanityCheck(filepath)
-  # browser()
-  params <- CombineParam(arg$default.params, arg$all.study.params[[study.id]])
-  # Auto parse study id from filepath if not provided in param
-  # study.id <- ifelse(!is.null(param$study.id), param.study.id, GetStudyId(filepath))
-  # Check if `filepath`.bcs already exists
+  params <- CombineParam(arg$default.params, arg$all.study.params[[study_id]])
   
   count.data <- readMtxFromThaoH5(filepath)
   
   study_info <- getInfo(filepath)
   hasMultiBatch <- unique(study_info$batch) > 1
+  hasADT <- study_info$hasADT
+  
+  # Handle Clonotype info
+  # Handle ADT features
+  if (hasADT) {
+    # mtx.adt <- NULL
+    # mtx.adt <- data[seq_along(ft.id$ADT) + length(ft.id$RNA), , drop=FALSE]
+    # rownames(mtx.adt) <- ft.id$ADT
+    print("This study has ADT, skipped for now")
+    return(FALSE)
+  }
+  
+  if (any(duplicated(colnames(count.data)))) {
+    print("There is duplicated barcodes")
+    return(FALSE)
+  }
 
-  # Run PCA
+  
   obj <- Seurat::CreateSeuratObject(count.data, min.cells=params$min.cells, min.features=params$min.features)
+
+  meta_data <- getMetadata(filepath)
+  if (!is.null(meta_data)) {
+    for (meta_name in names(meta_data)) {
+      print(paste("Adding metadata:", meta_name))
+      obj <- Seurat::AddMetaData(obj, meta_data[[meta_name]], col.name = meta_name)
+    }
+  }
 
   obj <- Seurat::NormalizeData(obj)
   obj <- Seurat::FindVariableFeatures(obj, nfeatures=min(params$n_variable_features, nrow(obj)))
   obj <- Seurat::ScaleData(obj)
   obj <- Seurat::RunPCA(obj)
   
-  study_info <- getInfo(filepath)
-  hasMultiBatch <- length(unique(study_info$batch)) > 1
+  needBatchCorrection <- NeedBatchCorrection(study_id)
   key <- 'pca'
-  if (hasMultiBatch && params$correct_method %in% c("mnn", "harmony")) { # Should check whether user want to run batch-correction for this particular study or not
-    print(paste("Run batch correction for:", study.id))
-    # browser()
-    batch <- rhdf5::h5read(filepath, "/batch", drop=TRUE)
+  if (needBatchCorrection && params$correct_method %in% c("mnn", "harmony")) {
+    print(paste("Run batch correction for:", study_id))
+    batch <- readThaoH5Slot(filepath, "/batch")
     obj <- Seurat::AddMetaData(obj, batch, col.name = 'batch')
     obj <- harmony::RunHarmony(obj, "batch", plot_convergence = FALSE, verbose = TRUE, epsilon.harmony = -Inf, max.iter.harmony = 30)
     key <- 'harmony'
@@ -164,14 +206,15 @@ RunPipeline <- function(study.id, arg) {
   umap.embeddings <- RunUMAP(mat, params) 
   obj@reductions[['UMAP']] <- Seurat::CreateDimReducObject(embeddings=umap.embeddings, assay="RNA", key=paste0(key, "_"))
   
-  # Run Graph-based cluster?
-  if (params$correct_method %in% c("mnn", "harmony") && params$correct_method %in% names(obj@reductions)) {
+  # Run Graph-based cluster
+  if (params$correct_method %in% c("cca", "mnn", "harmony") && params$correct_method %in% names(obj@reductions)) {
     n.dim.use <- min(30, ncol(obj@reductions[[params$correct_method]]))
     obj <- Seurat::FindNeighbors(obj, dims = 1:n.dim.use, reduction = params$correct_method)
   } else {
     n.dim.use <- min(30, ncol(obj@reductions$pca))
     obj <- Seurat::FindNeighbors(obj, dims = 1:n.dim.use, reduction = "pca")
   }
+  
   print("Running Louvain")
   obj <- Seurat::FindClusters(obj, verbose = FALSE)
   obj@meta.data$bioturing_graph <- as.numeric(obj@meta.data$seurat_clusters)
@@ -181,11 +224,19 @@ RunPipeline <- function(study.id, arg) {
   )
   # TODO: Remove metadata: bioturing_graph and RNA_snn_res.0.8
   ## 
+  
   # Import metadata
   # Check that new and old barcodes is the same, if yes, simply copy all metalist file
   # if not, this is gonna be mind-bending
   
   #
-  rBCS::ExportSeuratObject(obj, output.path, overwrite=FALSE)
+  rBCS::ExportSeurat(obj, output_path, overwrite=FALSE)
 }
 
+ProcessBatch <- function(study_list, output_dir, raw_path, old_data, arg) {
+  study_list <- study_list
+  output_dir <- output_dir
+  raw_path <- raw_path
+  old_data <- old_data
+  lapply(RunPipeline, arg=arg)
+}
