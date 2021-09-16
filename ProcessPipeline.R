@@ -73,9 +73,9 @@ SanityCheck <- function(filepath) {
   
   features <- rhdf5::h5read(filepath, "/features", drop=TRUE)
   barcodes <- rhdf5::h5read(filepath, "/barcodes", drop=TRUE)
-  print("Sample features")
+  print("Example features")
   print(features[1:5])
-  print("Sample barcodes")
+  print("Example barcodes")
   print(barcodes[1:5])
   batch <- rhdf5::h5read(filepath, "/batch", drop=TRUE)
   print(paste0("Number of batches: ", length(unique(batch))))
@@ -131,7 +131,6 @@ RunPipeline <- function(study.id, arg) {
   
   count.data <- readMtxFromThaoH5(filepath)
   
-  # If have batches --> remove batch effect with harmony
   study_info <- getInfo(filepath)
   hasMultiBatch <- unique(study_info$batch) > 1
 
@@ -143,12 +142,11 @@ RunPipeline <- function(study.id, arg) {
   obj <- Seurat::ScaleData(obj)
   obj <- Seurat::RunPCA(obj)
   
-  # If have batches --> remove batch effect with harmony
   study_info <- getInfo(filepath)
   hasMultiBatch <- length(unique(study_info$batch)) > 1
-  key <- 'pca' # TODO: Handle case when key = 'harmony' for multibatch study
+  key <- 'pca'
   if (hasMultiBatch && params$correct_method %in% c("mnn", "harmony")) { # Should check whether user want to run batch-correction for this particular study or not
-    print(paste("This study has multibatch:", study.id))
+    print(paste("Run batch correction for:", study.id))
     # browser()
     batch <- rhdf5::h5read(filepath, "/batch", drop=TRUE)
     obj <- Seurat::AddMetaData(obj, batch, col.name = 'batch')
