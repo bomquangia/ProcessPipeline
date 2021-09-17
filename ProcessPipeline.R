@@ -22,7 +22,7 @@ readThaoH5Slot <- function(filepath, slot) {
   return(rhdf5::h5read(filepath, slot, drop=TRUE))
 }
 
-getMetadata <- function(filepath) {
+GetMetadata <- function(filepath) {
   h5Info <-  rhdf5::h5ls(filepath)
   metaIdx <- h5Info$group == "/original_metadata"
   
@@ -30,6 +30,7 @@ getMetadata <- function(filepath) {
     return(NULL)
   }
   metaName <- h5Info$name[metaIdx]
+  print(metaName)
   meta_data <- lapply(paste0("/original_metadata/", metaName) , readThaoH5Slot, filepath=filepath) 
   names(meta_data) <- metaName
   return(meta_data)
@@ -65,12 +66,6 @@ WriteSpMt <- function(filePath, groupName, mat) {
   rhdf5::h5write(dim(mat), filePath, paste0(groupName, "/shape"))
 }
 
-CreateStudyDir <- function(study.dir) {
-  if (!dir.exists(study.dir)) {
-    dir.create(study.dir)
-  }
-}
-
 ConnectPath <- function(...) {
   res <- file.path(...)
   if (.Platform$OS.type == 'windows') {
@@ -90,17 +85,17 @@ RunUMAP <- function(data, param) {
   return(uwot::umap(data, n_neighbors = param$perplexity, n_components = param$dims))
 }
 
-NeedBatchCorrection <- function(study_id) {
+GetBatchCorrection <- function(study_id) {
   info <- RunDiagnostics(study_id)
   correct_method <- info$correct_method
   original_n_batch <- info$original_n_batch
   if (original_n_batch == 1) {
-    return(FALSE)
+    return("none")
   }
   if (is.null(correct_method) || correct_method %in% c("cca", "harmony", "mnn")) {
-    return(TRUE)
+    return("harmony")
   }
-  return(FALSE)
+  return("none")
 }
 
 SanityCheck <- function(filepath) {
@@ -188,28 +183,19 @@ RunPipeline <- function(study_id, arg) {
   }
 
   obj <- CreateSeuratObj(count_data, study_id)
-  # ADT_indices <- study_info$ADT_indices
-  # hasADT <- sum(ADT_indices) > 0
-  # # Handle Clonotype info
-  # # Handle ADT features
-  # if (hasADT) {
-  #   # browser()
-  #   stopifnot(sum(ADT_indices) > 5)
-  #   count_adt <- count_data[ADT_indices, ] # Check shape and colnames 
-  #   count_rna <- count_data[!ADT_indices, ] # Check that  this work
-  #   count_data <- count_data[!ADT_indices, ] # Check that  this work
-  #   # mtx.adt <- data[seq_along(ft.id$ADT) + length(ft.id$RNA), , drop=FALSE]
-  #   # rownames(mtx.adt) <- ft.id$ADT
-  #   print("This study has ADT")
-  #   # return(FALSE)
-  # }
+    # # Handle Clonotype info
 
-
-  meta_data <- getMetadata(filepath)
+  meta_data <- GetMetadata(filepath)
   if (!is.null(meta_data)) {
+
     for (meta_name in names(meta_data)) {
       print(paste("Adding metadata:", meta_name))
-      obj <- Seurat::AddMetaData(obj, as.character(meta_data[[meta_name]]), col.name = meta_name)
+      # browser()
+      meta <- as.numeric(meta_data[[meta_name]])
+      if (any(is.na(meta))) { # To avoid mistakenly forcing character into numeric
+        meta <- meta_data[[meta_name]]
+      }
+      obj <- Seurat::AddMetaData(obj, meta, col.name = meta_name)
     }
   }
 
@@ -218,9 +204,9 @@ RunPipeline <- function(study_id, arg) {
   obj <- Seurat::ScaleData(obj)
   obj <- Seurat::RunPCA(obj)
   
-  needBatchCorrection <- NeedBatchCorrection(study_id)
+  correct_method <- GetBatchCorrection(study_id)
   key <- 'pca'
-  if (needBatchCorrection && params$correct_method %in% c("cca", "mnn", "harmony")) {
+  if (correct_method != "none" && params$correct_method %in% c("cca", "mnn", "harmony")) {
     print(paste("Run batch correction for:", study_id))
     batch <- readThaoH5Slot(filepath, "/batch")
     obj <- Seurat::AddMetaData(obj, batch, col.name = 'batch')
@@ -273,3 +259,21 @@ ProcessBatch <- function(study_list, output_dir, raw_path, old_data, arg) {
   old_data <- old_data
   lapply(study_list, RunPipeline, arg=arg)
 }
+
+
+# EXAMPLE CODE
+# output_dir <- '/mnt2/vu/script/output'
+# old_data <- "/mnt2/vu/script/old_data"
+# raw_path <- "/mnt2/bioturing_data/raw_hdf5/"
+
+# batch_4 = "/mnt2/bioturing_data/files/batch_4.tsv"
+# study_list = as.character(read.table(file = batch_4, sep = '\t', header = FALSE)$V1)
+
+# default.params <- jsonlite::fromJSON('/mnt2/vu/script/ProcessPipeline/default_params.json')
+# all.study.params <- jsonlite::fromJSON('/mnt2/vu/script/ProcessPipeline/study_param.json')
+
+# arg <- list(output.dir = output_dir, raw_path = raw_path, default.params = default.params, all.study.params = all.study.params)
+
+# ProcessBatch(study_list, output_dir, raw_path, old_data, arg)
+
+
