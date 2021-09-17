@@ -59,7 +59,7 @@ RunDiagnostics <- function(study_id) {
   studyInfo <- GetInfo(study_id)
 
   duplicated_barcodes <- any(duplicated(barcodes))
-  original_n_batch <- length(unique(getInfo(hdf5_path)$batch))
+  original_n_batch <- length(unique(studyInfo$batch))
   hasADT = sum(studyInfo$ADT_indices) > 0
   if (!old_study_exists) {
     print('Old study zip not available')
