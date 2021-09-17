@@ -10,7 +10,6 @@ CheckBarcodes <- function(new_study, old_study) {
   return(full_match)
 }
 
-
 CheckBarcodeWrapper <- function(study) {
   print(paste0("Checking study: ", study))
 
@@ -44,62 +43,60 @@ RunDiagnostics <- function(study_id) {
   study_id <- as.character(study_id)
   bcs_path <- ConnectPath(output_dir, paste0(study_id, '.bcs'))
   hdf5_path <- ConnectPath(raw_path, paste0(study_id, '.hdf5'))
-  old_study_dir <- ConnectPath(old_data, study_id)
+  old_study_path <- ConnectPath(old_data, paste0(study_id, '.zip'))
 
   # Info needed to collect: Processed, Same barcodes, Number of batches, batch_correct, 
   processed <- file.exists(bcs_path)
   
   hdf5_exists <- file.exists(hdf5_path)
-  old_study_exists <- dir.exists(old_study_dir) || file.exists(paste0(old_study_dir, '.zip'))
+  old_study_exists <- file.exists(old_study_path)
   
   barcodes <- try(readThaoH5Slot(hdf5_path, "/barcodes"))
   if (inherits(barcodes, "try-error")) {
     print("Cannot open hdf5")
     return(NULL)
   }
-  studyInfo <- getInfo(hdf5_path)
+  studyInfo <- GetInfo(study_id)
 
   duplicated_barcodes <- any(duplicated(barcodes))
   original_n_batch <- length(unique(getInfo(hdf5_path)$batch))
-
+  hasADT = sum(studyInfo$ADT_indices) > 0
   if (!old_study_exists) {
+    print('Old study zip not available')
     return(list(
       study_id=study_id,
       original_n_batch=original_n_batch,
       processed=processed,
-      old_study_exists=old_study_exists,
       hdf5_exists=hdf5_exists,
-      hasADT = studyInfo$hasADT,
+      hasADT = hasADT,
       duplicated_barcodes = duplicated_barcodes))
   }
   same_barcodes <- CheckBarcodeWrapper(study_id)
   
   # This has to be collected from old study
-  run_info <- ReadJSON(ConnectPath(old_study_dir, 'run_info.json'))
+  # run_info <- ReadJSON(unzip(old_study_path, files =c(ConnectPath(study_id, 'run_info.json')))
+  # browser() # make sure that run_info is legit
+  run_info <- ReadJSON(unz(old_study_path, filename =ConnectPath(study_id, 'run_info.json')))
+  # run_info <- ReadJSON(ConnectPath(old_study_dir, 'run_info.json'))
   old_n_batch <- run_info$n_batch
   correct_method <- run_info$ana_setting$batchRemoval
-  # run_info$ana_setting$filter$gene
-  # run_info$ana_setting$filter$mito
-  # run_info$ana_setting$filter$top
   normMethod <- run_info$ana_setting$normMethod
   
   return(list(
     study_id=study_id,
     processed = processed,
-    old_study_exists=old_study_exists,
     hdf5_exists=hdf5_exists,
     same_barcodes = same_barcodes,
     original_n_batch=original_n_batch,
     old_n_batch=old_n_batch,
     correct_method=correct_method,
     normMethod = normMethod,
-    hasADT = studyInfo$hasADT,
+    hasADT = hasADT,
     duplicated_barcodes = duplicated_barcodes)
     )
 }
 
-ProcessBatch <- function(output_dir, raw_path, old_data, study_list) {
-  # Test code
+DiagnoseBatch <- function(output_dir, raw_path, old_data, study_list) {
   old_data <- old_data
   output_dir <- output_dir
   raw_path <- raw_path
