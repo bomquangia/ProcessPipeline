@@ -28,8 +28,15 @@ HexToRaw <- function(text) {
 }
 
 ReadJSON <- function(filepath, ...) {
+  
   secret.key <- Sys.getenv('e32dc2')
-  code <- jsonlite::fromJSON(filepath)
+  code <- try(jsonlite::fromJSON(filepath))
+  
+  if (inherits(code, "try-error")) {
+    print("cannot read run_info.json from zip, consider do it manually")
+    return(NULL)
+  }
+  
   if (!'iv' %in% names(code)) { # For unencrypted run_info.json
     return(code)
   }
@@ -56,6 +63,7 @@ RunDiagnostics <- function(study_id) {
     print("Cannot open hdf5")
     return(NULL)
   }
+  
   studyInfo <- GetInfo(study_id)
 
   duplicated_barcodes <- any(duplicated(barcodes))
@@ -65,9 +73,12 @@ RunDiagnostics <- function(study_id) {
     print('Old study zip not available')
     return(list(
       study_id=study_id,
-      original_n_batch=original_n_batch,
       processed=processed,
       hdf5_exists=hdf5_exists,
+      original_n_batch=original_n_batch,
+      old_n_batch= NULL,
+      correct_method= NULL,
+      normMethod = NULL,
       hasADT = hasADT,
       duplicated_barcodes = duplicated_barcodes))
   }
@@ -101,7 +112,8 @@ DiagnoseBatch <- function(output_dir, raw_path, old_data, study_list) {
   output_dir <- output_dir
   raw_path <- raw_path
   diagnosis <- lapply(study_list, RunDiagnostics)
-  return(diagnosis)
+
+  return(do.call(rbind, diagnosis))
 }
 
 ### Run diagnosis 

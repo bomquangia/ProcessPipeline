@@ -1,5 +1,13 @@
 library(rhdf5)
 
+NormalizeADT <- function(data) {
+  data <- Seurat::NormalizeData(data, assay = ANTIBODY_TYPE_INDICATOR, normalization.method = "CLR")
+  data <- Seurat::ScaleData(data, assay = ANTIBODY_TYPE_INDICATOR)
+  return(data)
+}
+
+
+
 readMtxFromThaoH5 <- function(filepath) {
   # print(filepath)
   ## TODO: Check file path exist
@@ -47,6 +55,17 @@ GetInfo <- function(study_id) {
   features <- readThaoH5Slot(filepath, '/features') 
   ADT_indices <- grepl("ADT-", features)
   return(list(batch=batch, species = species, ADT_indices=ADT_indices))
+}
+
+isCITESEQ <- function(study_id) {
+  filepath <- GetPath(study_id)
+  features <- readThaoH5Slot(filepath, '/features') 
+  ADT_indices <- grepl("ADT-", features)
+  hasADT <- sum(ADT_indices) > 0
+  if (hasADT) {
+    print(paste(study_id, "has ADT features"))
+  }
+  return(sum(ADT_indices) > 0)
 }
 
 WriteSpMt <- function(filePath, groupName, mat) {
@@ -183,6 +202,12 @@ RunPipeline <- function(study_id, arg) {
   }
 
   obj <- CreateSeuratObj(count_data, study_id)
+  
+  # TODO: Check this
+  # if ("ADT" %in% names(obj) && arg$unit == "umi") {
+  #   logger$cat("Normalizing ADT data...")
+  #   data <- NormalizeADT(data)
+  # }
     # # Handle Clonotype info
 
   meta_data <- GetMetadata(filepath)
@@ -260,6 +285,50 @@ ProcessBatch <- function(study_list, output_dir, raw_path, old_data, arg) {
   lapply(study_list, RunPipeline, arg=arg)
 }
 
+GenerateImportArg <- function(study_id, bcs_dir = output_dir, write_dir = "/Users/bioturing/.BioTBData/Data/SingleCell/Study/") {
+  
+  info <- GetInfo(study_id)
+  import_arg <- list()
+  import_arg$group_name_aws <- NULL
+  import_arg$input_path <- ConnectPath(bcs_dir, paste0(study_id, '.bcs'))
+  import_arg$path_type <- "local"
+  import_arg$batch_names <- NULL
+  import_arg$input_id <- c(uuid::UUIDgenerate())
+  import_arg$correct_method <- GetBatchCorrection(study_id)
+  import_arg$type <- c("bcs")
+  import_arg$unit <- "unknown" # TODO: Check this again 
+  import_arg$email <- "vu@bioturing.com"
+  import_arg$species <- info$species
+  import_arg$log_path <- ConnectPath(write_dir, study_id, "tmp/submit.log")
+  import_arg$dimred_method <- c("tsne", "umap")
+  import_arg$dimred_perplexity <- 0
+  import_arg$dimred_mode <- "slow"
+  import_arg$quant <- list(method = "unknown", ref = "unknown")
+  import_arg$seed <- 2409
+  import_arg$platform <- "unknown"
+  import_arg$filter <- list(cell=0, gene = c(0,0), mito = 100, top = 2000)
+  import_arg$subcluster <- "none"
+  import_arg$db_path <- "/Users/bioturing/.BioTBData/App/Model"
+  import_arg$output_path <- ConnectPath(write_dir, study_id, "main")
+  import_arg$create_adt_gallery <- TRUE
+  import_arg$refIndex <- "unknown"
+  import_arg$hash_id <- uuid::UUIDgenerate()
+  import_arg$title <- study_id
+  import_arg$tmpDir <-  ConnectPath(write_dir, study_id, "tmp")
+  import_arg$zip_bin <- list(zip = "zip", unzip = "unzip")
+  import_arg$version <- 16
+  import_arg$bbrowser_version <- "2.10.23"
+  import_arg$hash <- uuid::UUIDgenerate()
+  return(import_arg)
+}
+
+
+# import_arg <- GenerateImportArg("GSE123022", bcs_dir = "/mnt2/vu/script/output/batch_4", write_dir='')
+
+# lapply(study_list, function(study_id) {
+#   import_arg <- GenerateImportArg(study_id, bcs_dir = "/mnt2/vu/script/output/batch_4", write_dir='')
+#   jsonlite::write_json(import_arg, ConnectPath(output_dir, paste0(study_id, '.json')))
+# })
 
 # EXAMPLE CODE
 # output_dir <- '/mnt2/vu/script/output'
@@ -275,5 +344,3 @@ ProcessBatch <- function(study_list, output_dir, raw_path, old_data, arg) {
 # arg <- list(output.dir = output_dir, raw_path = raw_path, default.params = default.params, all.study.params = all.study.params)
 
 # ProcessBatch(study_list, output_dir, raw_path, old_data, arg)
-
-
