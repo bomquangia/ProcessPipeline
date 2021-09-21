@@ -91,7 +91,13 @@ RunDiagnostics <- function(study_id) {
   old_n_batch <- run_info$n_batch
   correct_method <- run_info$ana_setting$batchRemoval
   normMethod <- run_info$ana_setting$normMethod
+  
   unit <- run_info$unit
+  if (is.null(unit)) {
+    # browser()
+    unit <- run_info$ana_setting$unit
+  }
+
   return(list(
     study_id=study_id,
     processed = processed,
