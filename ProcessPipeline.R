@@ -1,15 +1,12 @@
 library(rhdf5)
 
 NormalizeADT <- function(data) {
-  data <- Seurat::NormalizeData(data, assay = ANTIBODY_TYPE_INDICATOR, normalization.method = "CLR")
-  data <- Seurat::ScaleData(data, assay = ANTIBODY_TYPE_INDICATOR)
+  data <- Seurat::NormalizeData(data, assay = "ADT", normalization.method = "CLR")
+  data <- Seurat::ScaleData(data, assay = "ADT")
   return(data)
 }
 
-
-
 readMtxFromThaoH5 <- function(filepath) {
-  # print(filepath)
   ## TODO: Check file path exist
 
   counts <- Matrix::sparseMatrix(
@@ -154,9 +151,27 @@ CreateSeuratObj <- function(data, name) {
 
   if (length(adt_idx) > 0) {
     print(paste('Adding ADT assay. Dimension:', nrow(adt_counts), ncol(adt_counts)))
+    print("Removing ADT prefix...")
+    rownames(adt_counts) <- gsub("ADT-", "", rownames(adt_counts))
+    print("ADT feature names after removal")
+    print(rownames(adt_counts)[1:5])
     obj[["ADT"]] <- Seurat::CreateAssayObject(counts = adt_counts[, colnames(obj)])
   }
   return(obj)
+}
+
+GetUnit <- function(study_id) {
+  info <- RunDiagnostics(study_id)
+  if (!is.null(info$unit)) {
+    return(info$unit)
+  }
+  filepath <- GetPath(study_id)
+  count_data <- readMtxFromThaoH5(filepath)
+  browser()
+  if (sum(abs(round(count_data@x[1:1000], 0) - count_data@x[1:1000])) > 0) { # Non integer
+    return("not umi")
+  }
+  return("umi")  # Assuming that if count.data is integer, it is umi
 }
 
 CombineParam <- function(default.params, study.params) {
@@ -193,9 +208,6 @@ RunPipeline <- function(study_id, arg) {
   
   count_data <- readMtxFromThaoH5(filepath)
   
-  study_info <- GetInfo(study_id)
-  hasMultiBatch <- unique(study_info$batch) > 1
-  
   if (any(duplicated(colnames(count_data)))) {
     print("There is duplicated barcodes")
     return(FALSE)
@@ -204,18 +216,19 @@ RunPipeline <- function(study_id, arg) {
   obj <- CreateSeuratObj(count_data, study_id)
   
   # TODO: Check this
-  # if ("ADT" %in% names(obj) && arg$unit == "umi") {
-  #   logger$cat("Normalizing ADT data...")
-  #   data <- NormalizeADT(data)
-  # }
-    # # Handle Clonotype info
+  unit <- GetUnit(study_id)
+  if ("ADT" %in% names(obj) && unit == "umi") {
+    print("Normalizing ADT data...")
+    obj <- NormalizeADT(obj)
+  }
+
+  # Handle Clonotype info
 
   meta_data <- GetMetadata(filepath)
   if (!is.null(meta_data)) {
 
     for (meta_name in names(meta_data)) {
       print(paste("Adding metadata:", meta_name))
-      # browser()
       meta <- as.numeric(meta_data[[meta_name]])
       if (any(is.na(meta))) { # To avoid mistakenly forcing character into numeric
         meta <- meta_data[[meta_name]]

@@ -80,19 +80,18 @@ RunDiagnostics <- function(study_id) {
       correct_method= NULL,
       normMethod = NULL,
       hasADT = hasADT,
+      unit = NULL,
       duplicated_barcodes = duplicated_barcodes))
   }
   same_barcodes <- CheckBarcodeWrapper(study_id)
   
   # This has to be collected from old study
-  # run_info <- ReadJSON(unzip(old_study_path, files =c(ConnectPath(study_id, 'run_info.json')))
-  # browser() # make sure that run_info is legit
   run_info <- ReadJSON(unz(old_study_path, filename =ConnectPath(study_id, 'run_info.json')))
-  # run_info <- ReadJSON(ConnectPath(old_study_dir, 'run_info.json'))
+
   old_n_batch <- run_info$n_batch
   correct_method <- run_info$ana_setting$batchRemoval
   normMethod <- run_info$ana_setting$normMethod
-  
+  unit <- run_info$unit
   return(list(
     study_id=study_id,
     processed = processed,
@@ -103,6 +102,7 @@ RunDiagnostics <- function(study_id) {
     correct_method=correct_method,
     normMethod = normMethod,
     hasADT = hasADT,
+    unit = unit,
     duplicated_barcodes = duplicated_barcodes)
     )
 }
