@@ -45,32 +45,38 @@ ReadJSON <- function(filepath, ...) {
   return(jsonlite::fromJSON(raw.content, ...))
 }
 
-RunDiagnostics <- function(study_id) {
-  print(paste("Running Diagnosis for", study_id))
+RunDiagnostics <- function(study_id, file_logger=NULL) {
+  if (is.null(file_logger)) {
+    file_logger = log4r::logger()
+  }
+  
+  log4r::info(file_logger, paste("Running Diagnosis for", study_id))
   study_id <- as.character(study_id)
   bcs_path <- ConnectPath(output_dir, paste0(study_id, '.bcs'))
   hdf5_path <- ConnectPath(raw_path, paste0(study_id, '.hdf5'))
-  old_study_path <- ConnectPath(old_data, paste0(study_id, '.zip'))
+  
+  old_study_path <- ConnectPath(old_data, study_id)
 
   # Info needed to collect: Processed, Same barcodes, Number of batches, batch_correct, 
   processed <- file.exists(bcs_path)
   
   hdf5_exists <- file.exists(hdf5_path)
-  old_study_exists <- file.exists(old_study_path)
+  # browser()
+  old_study_exists <- dir.exists(old_study_path)
   
   barcodes <- try(readThaoH5Slot(hdf5_path, "/barcodes"))
   if (inherits(barcodes, "try-error")) {
-    print("Cannot open hdf5")
+    log4r::info(file_logger, paste("Cannot open hdf5"))
     return(NULL)
   }
   
   studyInfo <- GetInfo(study_id)
 
-  duplicated_barcodes <- any(duplicated(barcodes))
   original_n_batch <- length(unique(studyInfo$batch))
   hasADT = sum(studyInfo$ADT_indices) > 0
   if (!old_study_exists) {
-    print('Old study zip not available')
+    log4r::info(file_logger, paste("Either Old study zip not available, or unzip went wrong"))
+
     return(list(
       study_id=study_id,
       processed=processed,
@@ -78,23 +84,20 @@ RunDiagnostics <- function(study_id) {
       original_n_batch=original_n_batch,
       old_n_batch= NULL,
       correct_method= NULL,
-      normMethod = NULL,
+      norm_method = NULL,
       hasADT = hasADT,
-      unit = NULL,
-      duplicated_barcodes = duplicated_barcodes))
+      unit = NULL))
   }
-  same_barcodes <- CheckBarcodeWrapper(study_id)
+  # same_barcodes <- CheckBarcodeWrapper(study_id)
   
-  # This has to be collected from old study
-  run_info <- ReadJSON(unz(old_study_path, filename =ConnectPath(study_id, 'run_info.json')))
-
+  run_info <- ReadJSON(ConnectPath(old_data, study_id, "run_info.json"))
+  
   old_n_batch <- run_info$n_batch
   correct_method <- run_info$ana_setting$batchRemoval
-  normMethod <- run_info$ana_setting$normMethod
-  
+  norm_method <- run_info$ana_setting$normMethod
   unit <- run_info$unit
+  
   if (is.null(unit)) {
-    # browser()
     unit <- run_info$ana_setting$unit
   }
 
@@ -102,14 +105,12 @@ RunDiagnostics <- function(study_id) {
     study_id=study_id,
     processed = processed,
     hdf5_exists=hdf5_exists,
-    same_barcodes = same_barcodes,
     original_n_batch=original_n_batch,
     old_n_batch=old_n_batch,
     correct_method=correct_method,
-    normMethod = normMethod,
+    norm_method = norm_method,
     hasADT = hasADT,
-    unit = unit,
-    duplicated_barcodes = duplicated_barcodes)
+    unit = unit)
     )
 }
 
@@ -122,6 +123,7 @@ DiagnoseBatch <- function(output_dir, raw_path, old_data, study_list) {
   return(do.call(rbind, diagnosis))
 }
 
+
 ### Run diagnosis 
 # output_dir <- '/mnt2/vu/script/output'
 # raw_path <- "/mnt2/bioturing_data/raw_hdf5/"
@@ -130,3 +132,11 @@ DiagnoseBatch <- function(output_dir, raw_path, old_data, study_list) {
 # study_list = read.table(file = batch_4, sep = '\t', header = FALSE)$V1
 
 # diagnosis <- DiagnoseBatch(output_dir, raw_path, old_data, study_list)
+
+## Collect Old run_info.json and compile a list of param
+CollectOldParams <- function(study_id) {
+  info <- RunDiagnostics((study_id))
+  # params <- list()
+  # params[[study_id]] <- list(correct_method = info$correct_method, norm_method = info$norm_method, unit=info$unit, old_n_batch=info$old_n_batch)
+  return(list(correct_method = info$correct_method, norm_method = info$norm_method, unit=info$unit, old_n_batch=info$old_n_batch))
+}

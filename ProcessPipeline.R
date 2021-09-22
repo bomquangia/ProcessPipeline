@@ -102,60 +102,99 @@ RunUMAP <- function(data, param) {
   return(uwot::umap(data, n_neighbors = param$perplexity, n_components = param$dims))
 }
 
-GetBatchCorrection <- function(study_id) {
-  info <- RunDiagnostics(study_id)
+GetBatchCorrection <- function(study_id, file_logger = NULL) {
+  if (is.null(file_logger)) {
+    file_logger = log4r::logger()
+  }
+  log4r::info(file_logger, paste("Getting batch correction method for", study_id))
+  info <- CombineParam(arg$default_params, arg$all_study_params[[study_id]])
+  # info <- arg$params[[study_id]]
   correct_method <- info$correct_method
+  if (!is.null(correct_method)) {
+    log4r::info(file_logger, paste("Use batch correction method given by params:", correct_method))
+    return(correct_method)
+  }
+
+  log4r::info(file_logger, paste("Batch correction method for this study not given by params, checking number of batch..."))
+  
+  info <- RunDiagnostics(study_id)
   original_n_batch <- info$original_n_batch
+  
   if (original_n_batch == 1) {
+    log4r::info(file_logger, paste("This study only has 1 batch, setting batch correction to `none`"))
     return("none")
   }
-  if (is.null(correct_method) || correct_method %in% c("cca", "harmony", "mnn")) {
-    return("harmony")
-  }
-  return("none")
+  
+  log4r::info(file_logger, paste("More than one batch, using `harmony` as batch correction method"))
+  return("harmony")
 }
 
-SanityCheck <- function(filepath) {
+SanityCheck <- function(filepath, file_logger=NULL) {
+  if (is.null(file_logger)) {
+    file_logger = log4r::logger()
+  }
   dims = readThaoH5Slot(filepath, "/shape")
-  print("Dimensions")
-  print(dims)
-  
+  # print("Dimensions")
+  # print(dims)
+
+  # log4r::info(file_logger, paste("Dimensions", dims[1], dims[2]))  
+
   features <- readThaoH5Slot(filepath, "/features")
   barcodes <- readThaoH5Slot(filepath, "/barcodes")
-  print("Example features")
+
   n <- length(features)
   print(features[c(1:5, (n-5):n)])
-  print("Example barcodes")
-  print(barcodes[1:5])
+  
+  # print("Example features")
+  log4r::info(file_logger, paste("Example features: "))
+  log4r::info(file_logger, paste(do.call(paste, as.list(features[c(1:5, (n-5):n)]))))
+  
+  # print("Example barcodes")
+  # print(barcodes[1:5])
+  log4r::info(file_logger, paste("Example barcodes: "))
+  log4r::info(file_logger, paste(do.call(paste, as.list(barcodes[1:5]))))
+
   batch <- readThaoH5Slot(filepath, "/batch")
-  print(paste0("Number of batches: ", length(unique(batch))))
-  print(unique(batch))
+  # print(paste0("Number of batches: ", length(unique(batch))))
+  # print(unique(batch))
+
+  log4r::info(file_logger, paste("Number of batches: ", length(unique(batch))))
+  log4r::info(file_logger, paste("Batch names: "))
+  log4r::info(file_logger, paste(do.call(paste, as.list(unique(batch)))))
+
 }
 
-GetStudyId <- function(filepath) {
-  # filepath must be a path to a hdf5 file
-  study_id <- sub('\\.hdf5$', '', basename(filepath)) 
-  return(study_id)
-}
-
-CreateSeuratObj <- function(data, name) {
+CreateSeuratObj <- function(data, name, file_logger=NULL) {
+  if (is.null(file_logger)) {
+    file_logger = log4r::logger()
+  }
   feature_type <- rep("RNA", nrow(data))
   adt_idx <- grep("^ADT-", rownames(data))
   if (length(adt_idx) > 0) {
     adt_counts <- data[adt_idx, ]
     data <- data[-adt_idx, ] # remove adt expression
   }
-  print(paste('Adding RNA assay. Dimension:', nrow(data), ncol(data)))
-
+  # print(paste('Adding RNA assay. Dimension:', nrow(data), ncol(data)))
+  log4r::info(file_logger, paste('Adding RNA assay. Dimension:', nrow(data), ncol(data)))
   obj <- Seurat::CreateSeuratObject(counts = data, project = name,
       min.cells = 0, min.features = 0)
 
   if (length(adt_idx) > 0) {
-    print(paste('Adding ADT assay. Dimension:', nrow(adt_counts), ncol(adt_counts)))
-    print("Removing ADT prefix...")
-    rownames(adt_counts) <- gsub("ADT-", "", rownames(adt_counts))
-    print("ADT feature names after removal")
-    print(rownames(adt_counts)[1:5])
+    # print(paste('Adding ADT assay. Dimension:', nrow(adt_counts), ncol(adt_counts)))
+    log4r::info(file_logger, paste('Adding ADT assay. Dimension:', nrow(adt_counts), ncol(adt_counts)))
+    # print("Removing `ADT-` prefix to avoid conflicting with rBCS...")
+    log4r::warn(file_logger, paste("Removing `ADT-` prefix to avoid conflicting with rBCS..."))
+    # print("ADT feature names before removal")
+    # print(rownames(adt_counts)[1:5])
+
+    log4r::info(file_logger, paste("ADT feature names before removal"))
+    log4r::info(file_logger, paste(do.call(paste, as.list(rownames(adt_counts)[1:5]))))
+    rownames(adt_counts) <- gsub("^ADT-", "", rownames(adt_counts))
+    # print("ADT feature names after removal")
+    # print(rownames(adt_counts)[1:5])
+    log4r::info(file_logger, paste("ADT feature names after removal"))
+    log4r::info(file_logger, paste(do.call(paste, as.list(rownames(adt_counts)[1:5]))))
+
     obj[["ADT"]] <- Seurat::CreateAssayObject(counts = adt_counts[, colnames(obj)])
   }
   return(obj)
@@ -289,64 +328,87 @@ CountFromTCRData <- function(data) {
       chainCount = as.list(chain.count)))
 }
 
-GetUnit <- function(study_id) {
-  info <- RunDiagnostics(study_id)
-  if (!is.null(info$unit)) {
+GetUnit <- function(study_id, file_logger=NULL) {
+  if (is.null(file_logger)) {
+    file_logger = log4r::logger()
+  }
+  log4r::info(file_logger, paste("Getting count unit..."))
+  info <- CombineParam(arg$default_params, arg$all_study_params[[study_id]])
+  if (!is.null(info$unit) && info$unit != 'unknown') {
+    log4r::info(file_logger, paste("Using count unit provided by params..."))
     return(info$unit)
   }
+  
+  log4r::warn(file_logger, paste0("Count unit provided by params is either null or unknown (", info$unit, "). Attempting to guess unit from count data..."))
   filepath <- GetPath(study_id)
   count_data <- readMtxFromThaoH5(filepath)
   if (sum(abs(round(count_data@x[1:1000], 0) - count_data@x[1:1000])) > 0) { # Non integer
+    log4r::warn(file_logger, paste("Count unit is non integer."))
     return("not umi")
   }
-  return("umi")  # Assuming that if count.data is integer, it is umi
+  log4r::info(file_logger, paste("Count unit is integer. Assuming that they are UMI"))
+  return("umi")  
 }
 
-CombineParam <- function(default.params, study.params) {
+CombineParam <- function(default_params, study_params) {
   # USAGE: Enable user to specify params to be used for a particular study, if differs from the global params
   # Example
   # global_param <- list(dims = 2, perplexity = 10, output.dir = output.dir, seed = 2409, correct_method='harmony')
   # study_param <- list(dims = 3, seed = 2409, correct_method='none')
   # CombineParam(global_param, study_param) --> list(dims = 3, seed = 2409, correct_method='none')
-
-  if (is.null(study.params)) {
-    study.params = list()
+  # browser()
+  if (is.null(study_params)) {
+    study_params = list()
   }
-  for (key in names(default.params)) {
-    if (is.null(study.params[[key]])) {
-      study.params[[key]] <- default.params[[key]]
+  for (key in names(default_params)) {
+    if (is.null(study_params[[key]])) {
+      study_params[[key]] <- default_params[[key]]
     }
   }
-  return(study.params)
+  return(study_params)
 }
 
 RunPipeline <- function(study_id, arg) {
+  RAW_PATH <- arg$raw_path
+  OUT_DIR <- arg$output_dir
+  OLD_DATA <- arg$old_data
 
-  filepath <- ConnectPath(arg$raw_path, paste0(study_id, '.hdf5'))
-  output_path <- ConnectPath(arg$output.dir, paste0(study_id, '.bcs'))
-  
+  filepath <- ConnectPath(RAW_PATH, paste0(study_id, '.hdf5'))
+  output_path <- ConnectPath(OUT_DIR, paste0(study_id, '.bcs'))
   if (file.exists(output_path)) {
     print(paste("This study has already been process:", study_id))
     return(FALSE)
   }
-  print(paste("Processing:", study_id))
-  SanityCheck(filepath)
-
-  params <- CombineParam(arg$default.params, arg$all.study.params[[study_id]])
+  # default_logger <- log4r::logger()
+  log_file <- ConnectPath(OUT_DIR, paste0(study_id, ".log"))
+  file_logger <- log4r::logger(appenders = c(log4r::console_appender(), log4r::file_appender(log_file)))
   
+  if (file.exists(log_file)) {
+    print(paste("WARNING: log file exist, this might cause some conflict in log: ", log_file))
+    log4r::info(file_logger, paste("---------***---------"))
+  }
+  
+  # print(paste("Processing:", study_id))
+  log4r::info(file_logger, paste("Processing:", study_id))
+  SanityCheck(filepath, file_logger)
+
+  params <- CombineParam(arg$default_params, arg$all_study_params[[study_id]])
+
   count_data <- readMtxFromThaoH5(filepath)
   
   if (any(duplicated(colnames(count_data)))) {
-    print("There is duplicated barcodes")
+    # print("There is duplicated barcodes")
+    log4r::error(file_logger, paste("There is duplicated barcodes, stop processing."))
     return(FALSE)
   }
 
-  obj <- CreateSeuratObj(count_data, study_id)
+  obj <- CreateSeuratObj(count_data, study_id, file_logger)
   
   # TODO: Check this
-  unit <- GetUnit(study_id)
+  unit <- GetUnit(study_id, file_logger)
   if ("ADT" %in% names(obj) && unit == "umi") {
-    print("Normalizing ADT data...")
+    # print("Normalizing ADT data...")
+    log4r::info(file_logger, paste("Normalizing ADT data..."))
     obj <- NormalizeADT(obj)
   }
 
@@ -358,7 +420,8 @@ RunPipeline <- function(study_id, arg) {
   if (!is.null(meta_data)) {
 
     for (meta_name in names(meta_data)) {
-      print(paste("Adding metadata:", meta_name))
+      # print(paste("Adding metadata:", meta_name))
+      log4r::info(file_logger, paste("Adding metadata:", meta_name))
       meta <- as.numeric(meta_data[[meta_name]])
       if (any(is.na(meta))) { # To avoid mistakenly forcing character into numeric
         meta <- meta_data[[meta_name]]
@@ -368,25 +431,31 @@ RunPipeline <- function(study_id, arg) {
   }
 
   # TODO: Check unit before normalizing?
-  print(paste("Count unit:", unit))
+  # print(paste("Count unit:", unit))
+  log4r::info(file_logger, paste("Count Unit", unit))
   if (unit != 'lognorm') {
+    log4r::info(file_logger, paste("Normalizing data"))
     obj <- Seurat::NormalizeData(obj)
+  } else {
+    log4r::info(file_logger, paste("Skip normalization."))
   }
 
   obj <- Seurat::FindVariableFeatures(obj, nfeatures=min(params$n_variable_features, nrow(obj)))
   obj <- Seurat::ScaleData(obj)
   obj <- Seurat::RunPCA(obj)
   
-  correct_method <- GetBatchCorrection(study_id)
+  correct_method <- GetBatchCorrection(study_id, file_logger)
   key <- 'pca'
-  if (correct_method != "none" && params$correct_method %in% c("cca", "mnn", "harmony")) {
-    print(paste("Run batch correction for:", study_id))
+  if (correct_method %in% c("cca", "mnn", "harmony")) {
+    # print(paste("Run batch correction for:", study_id))
+    log4r::info(file_logger, paste("Run HARMONY batch correction for:", study_id))
     batch <- readThaoH5Slot(filepath, "/batch")
     obj <- Seurat::AddMetaData(obj, batch, col.name = 'batch')
     obj <- harmony::RunHarmony(obj, "batch", plot_convergence = FALSE, verbose = TRUE, epsilon.harmony = -Inf, max.iter.harmony = 30)
     key <- 'harmony'
   } else {
-    print(paste("Not correct batch for:", study_id))
+    # print(paste("Not correct batch for:", study_id))
+    log4r::info(file_logger, paste("Not correct batch for:", study_id))
   }
   
   mat <- obj@reductions[[key]]@cell.embeddings
@@ -408,7 +477,8 @@ RunPipeline <- function(study_id, arg) {
     obj <- Seurat::FindNeighbors(obj, dims = 1:n.dim.use, reduction = "pca")
   }
   
-  print("Running Louvain")
+  # print("Running Louvain")
+  log4r::info(file_logger, paste("Running Louvain"))
   obj <- Seurat::FindClusters(obj, verbose = FALSE)
   obj@meta.data$bioturing_graph <- as.numeric(obj@meta.data$seurat_clusters)
   obj@meta.data$bioturing_graph <- factor(
@@ -422,14 +492,12 @@ RunPipeline <- function(study_id, arg) {
   # Check that new and old barcodes is the same, if yes, simply copy all metalist file
   # if not, this is gonna be mind-bending
   #
+  rhdf5::h5closeAll()
   rBCS::ExportSeurat(obj, output_path, overwrite=TRUE)
 }
 
-ProcessBatch <- function(study_list, output_dir, raw_path, old_data, arg) {
+ProcessBatch <- function(study_list, arg) {
   study_list <- study_list
-  output_dir <- output_dir
-  raw_path <- raw_path
-  old_data <- old_data
   lapply(study_list, RunPipeline, arg=arg)
 }
 
@@ -471,24 +539,7 @@ GenerateImportArg <- function(study_id, bcs_dir = output_dir, write_dir = "/User
 }
 
 
-# import_arg <- GenerateImportArg("GSE123022", bcs_dir = "/mnt2/vu/script/output/batch_4", write_dir='')
-
 # lapply(study_list, function(study_id) {
 #   import_arg <- GenerateImportArg(study_id, bcs_dir = "/mnt2/vu/script/output/batch_4", write_dir='')
 #   jsonlite::write_json(import_arg, ConnectPath(output_dir, paste0(study_id, '.json')))
 # })
-
-# EXAMPLE CODE
-# output_dir <- '/mnt2/vu/script/output'
-# old_data <- "/mnt2/vu/script/old_data"
-# raw_path <- "/mnt2/bioturing_data/raw_hdf5/"
-
-# batch_4 = "/mnt2/bioturing_data/files/batch_4.tsv"
-# study_list = as.character(read.table(file = batch_4, sep = '\t', header = FALSE)$V1)
-
-# default.params <- jsonlite::fromJSON('/mnt2/vu/script/ProcessPipeline/default_params.json')
-# all.study.params <- jsonlite::fromJSON('/mnt2/vu/script/ProcessPipeline/study_param.json')
-
-# arg <- list(output.dir = output_dir, raw_path = raw_path, default.params = default.params, all.study.params = all.study.params)
-
-# ProcessBatch(study_list, output_dir, raw_path, old_data, arg)

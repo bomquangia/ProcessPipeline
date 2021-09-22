@@ -3,7 +3,6 @@
     "perplexity": 30,
     "dims": 2,
     "seed": 2409,
-    "print_sanity_check": true,
     "correct_method": "none",
     "min.cells": 0,
     "min.features": 0,
