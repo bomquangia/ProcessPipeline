@@ -6,6 +6,10 @@ NormalizeADT <- function(data) {
   return(data)
 }
 
+IsEnsemblID <- function(x) {
+  return(any(grepl("^ENS", x[1: min(50, length(x))])))
+}
+
 readMtxFromThaoH5 <- function(filepath) {
   ## TODO: Check file path exist
 
@@ -273,7 +277,7 @@ CountFromTCRData <- function(data) {
 
   ### Count by chain types
   print('Counting by chains')
-  # browser()
+  
   chain.count <- aggregate(data[, 'index'],
     data[, c('v_gene', 'j_gene', 'chain', 'cdr3')], sort)
   chain.count$count <- sapply(chain.count$x, length)
@@ -295,7 +299,7 @@ CountFromTCRData <- function(data) {
 
   ### Count by pairs
   print('Counting by pair')
-  browser()
+  
   clono.count <- aggregate(data[, 'id'], as.data.frame(data[, 'index']),
       function(x) paste(sort(x), collapse = ';'))
   clono.count <- aggregate(clono.count[, 'index', drop = FALSE],
@@ -356,7 +360,7 @@ CombineParam <- function(default_params, study_params) {
   # global_param <- list(dims = 2, perplexity = 10, output.dir = output.dir, seed = 2409, correct_method='harmony')
   # study_param <- list(dims = 3, seed = 2409, correct_method='none')
   # CombineParam(global_param, study_param) --> list(dims = 3, seed = 2409, correct_method='none')
-  # browser()
+  
   if (is.null(study_params)) {
     study_params = list()
   }
@@ -396,6 +400,25 @@ RunPipeline <- function(study_id, arg) {
 
   count_data <- readMtxFromThaoH5(filepath)
   
+  TrimGeneName <- function(name) {
+    if (!IsEnsemblID(name)) { # Only trim for EnsemblID
+      return(name)
+    }
+    if (any(grepl("\\.\\d+$", name))) {
+      log4r::warn(file_logger, paste("Trimming suffix (eg `.1`) from EnsemblID..."))
+    }
+    log4r::info(file_logger, paste("EnsemblID after trimming:"))
+    name <- gsub("\\.\\d+$", "", name)
+    log4r::info(file_logger, do.call(paste, as.list(name[1:5])))
+    return(name)
+  }
+
+  ft <- rownames(count_data)
+  if (IsEnsemblID(ft)) {
+    ft <- TrimGeneName(ft)
+    rownames(count_data) <- ft
+  }
+
   if (any(duplicated(colnames(count_data)))) {
     # print("There is duplicated barcodes")
     log4r::error(file_logger, paste("There is duplicated barcodes, stop processing."))
@@ -462,6 +485,7 @@ RunPipeline <- function(study_id, arg) {
   mat <- mat[, 1:min(ncol(mat), 50)]
   
   # Run TSNE and UMAP
+  log4r::info(file_logger, paste("Running T-SNE and UMAP"))
   tsne.embeddings <- RunTSNE(mat, params)
   obj@reductions[['tSNE']] <- Seurat::CreateDimReducObject(embeddings=tsne.embeddings, assay="RNA", key=paste0(key, "_"))
   
@@ -469,6 +493,8 @@ RunPipeline <- function(study_id, arg) {
   obj@reductions[['UMAP']] <- Seurat::CreateDimReducObject(embeddings=umap.embeddings, assay="RNA", key=paste0(key, "_"))
   
   # Run Graph-based cluster
+  log4r::info(file_logger, paste("Running Graph-based clustering"))
+  
   if (params$correct_method %in% c("cca", "mnn", "harmony") && params$correct_method %in% names(obj@reductions)) {
     n.dim.use <- min(30, ncol(obj@reductions[[params$correct_method]]))
     obj <- Seurat::FindNeighbors(obj, dims = 1:n.dim.use, reduction = params$correct_method)
@@ -493,7 +519,9 @@ RunPipeline <- function(study_id, arg) {
   # if not, this is gonna be mind-bending
   #
   rhdf5::h5closeAll()
+  log4r::info(file_logger, paste("Exporting BCS"))
   rBCS::ExportSeurat(obj, output_path, overwrite=TRUE)
+  log4r::info(file_logger, paste("FINISHED"))
 }
 
 ProcessBatch <- function(study_list, arg) {
@@ -543,3 +571,5 @@ GenerateImportArg <- function(study_id, bcs_dir = output_dir, write_dir = "/User
 #   import_arg <- GenerateImportArg(study_id, bcs_dir = "/mnt2/vu/script/output/batch_4", write_dir='')
 #   jsonlite::write_json(import_arg, ConnectPath(output_dir, paste0(study_id, '.json')))
 # })
+
+# TODO: Catch more messages to log.
