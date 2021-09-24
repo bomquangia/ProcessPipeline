@@ -1,25 +1,40 @@
 
-CheckBarcodes <- function(new_study, old_study) {
-  # new.study and old.study are path to respective folder
+CheckBarcodes <- function(study_id) {
+  print(paste0("Checking study: ", study_id))
+  new_study <- ConnectPath(output_dir, study_id)
+  old_study <- ConnectPath(old_data, study_id) # Should change this to read from 
+
+  if (!file.exists(new_study)) {
+    print('Not yet finished or you are pointing to the wrong directory for new study')
+    return(c(NA,NA,NA,NA))
+  }
+  if (!file.exists(old_study)) {
+    print('No data of old study available or you are pointing to the wrong directory for new study')
+    return(c(study_id,NA,NA,NA))
+  }
+
   new_barcodes <- as.character(read.csv(ConnectPath(new_study, 'main', 'barcodes.tsv'), sep='\t', header=FALSE)$V1)
   old_barcodes <- as.character(read.csv(ConnectPath(old_study, 'main', 'barcodes.tsv'), sep='\t', header=FALSE)$V1)
   
   match <- old_barcodes %in% new_barcodes
   full_match <- paste("Full match: ", sum(match), '/', length(match))
-  
-  return(full_match)
+  print(full_match)
+  return(list(study_id = study_id, Number_Match= sum(match), Old_barcodes = length(old_barcodes), New_barcodes = length(new_barcodes)))
 }
 
-CheckBarcodeWrapper <- function(study) {
-  print(paste0("Checking study: ", study))
+# CheckBarcodeWrapper <- function(study_id) {
+#   print(paste0("Checking study: ", study_id))
 
-  new_study <- ConnectPath(output_dir, study)
-  old_study <- ConnectPath(old_data, study) # Should change this to read from 
-  if (!file.exists(new_study)) {
-    return('Not yet finished')
-  }
-  CheckBarcodes(new_study, old_study)
-}
+#   if (!file.exists(new_study)) {
+#     print('Not yet finished or you are pointing to the wrong directory for new study')
+#     return(NULL)
+#   }
+#   if (!file.exists(old_study)) {
+#     print('No data of old study available or you are pointing to the wrong directory for new study')
+#     return(NULL)
+#   }
+#   CheckBarcodes(new_study, old_study)
+# }
 
 HexToRaw <- function(text) {
   vals <- matrix(as.integer(as.hexmode(strsplit(text, "")[[1]])), ncol=2, byrow=TRUE)
@@ -61,7 +76,7 @@ RunDiagnostics <- function(study_id, file_logger=NULL) {
   processed <- file.exists(bcs_path)
   
   hdf5_exists <- file.exists(hdf5_path)
-  # browser()
+  
   old_study_exists <- dir.exists(old_study_path)
   
   barcodes <- try(readThaoH5Slot(hdf5_path, "/barcodes"))
@@ -139,4 +154,27 @@ CollectOldParams <- function(study_id) {
   # params <- list()
   # params[[study_id]] <- list(correct_method = info$correct_method, norm_method = info$norm_method, unit=info$unit, old_n_batch=info$old_n_batch)
   return(list(correct_method = info$correct_method, norm_method = info$norm_method, unit=info$unit, old_n_batch=info$old_n_batch))
+}
+
+GetPrefix <- function(barcode) {
+  locations <- stringr::str_locate(barcode, "[ACGT]{16}")
+  prefix <- substr(barcode, 1, locations[1]-1)
+  return(prefix)
+}
+
+GetSuffix <- function(barcode) {
+  barcode <- as.character(barcode)
+  locations <- stringr::str_locate(barcode, "[ACGT]{16}")
+  suffix <- substr(barcode, locations[2]+1, nchar(barcode))
+  return(suffix)
+}
+
+GetBarcodeCore <- function(barcode) {
+  locations <- stringr::str_locate(barcode, "[ACGT]{16}")
+  core <- substr(barcode, locations[1], locations[2])
+  return(core)
+}
+
+CheckUnique <- function(barcodes) {
+  return(length(unique(barcodes)) == length(barcodes))
 }
