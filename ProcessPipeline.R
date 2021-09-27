@@ -46,7 +46,7 @@ ImportMetadata <- function(arg.json) {
 
   ReadMetadataTable <- function(filepath) {
     special.names <- c("Graph-based clusters", "Batch", "Total count", "Total expressed feature")
-    data <- ReadPlainTextTable(filepath)
+    data <- NoraSC::ReadPlainTextTable(filepath)
     colnames(data) <- PrettifyNames(colnames(data))
     types <- as.character(sapply(data, function(x) class(x)[1]))
     
@@ -71,8 +71,7 @@ ImportMetadata <- function(arg.json) {
       meta.file <- input.dir[index]
       if (!is.na(meta.file)) {
         data <- ReadMetadataTable(meta.file)
-        logger$cat(basename(meta.file), ":", dim(data))
-        logger$cat("Add batch prefix to barcodes")
+        
         data[[1]] <- paste(index, data[[1]], sep = "_")
         return(data)
       }
@@ -85,13 +84,13 @@ ImportMetadata <- function(arg.json) {
 
   CreateMeta <- function(input.dir, status) {
     if (status == "single") {
-      logger$cat('Read metadata for a single-batch study')
+      
       meta <- ReadMetadataTable(input.dir[1])
     } else if (length(input.dir) == 1) {
-      logger$cat('Read one metadata for a multiple-batches study')
+      
       meta <- ReadMetadataTable(input.dir)
     } else {
-      logger$cat('Read multiple metadata for a multiple-batches study')
+      
       meta <- CreateMetaMultiBatch(input.dir)
     }
     if (is.null(ncol(meta)) || ncol(meta) < 2) {
@@ -101,11 +100,13 @@ ImportMetadata <- function(arg.json) {
   }
 
   DoProcess <- function() {
-    logger$cat("Reading barcodes")
-    # barcodes <- as.character(rhdf5::h5read(ConnectPath(arg$data_path, "matrix.hdf5"), "bioturing/barcodes"))
-    barcodes <- ReadBioTuringRawH5Slot(GetPath(study_id), "/barcodes")
-    logger$cat("Creating a template")
+    barcodes <- ReadBioTuringRawH5Slot(arg$raw_h5, "/barcodes")
+    
     meta <- CreateMeta(arg$input_path, arg$type)
+    
+    omit_columns <- grep("Barcodes", colnames(meta), ignore.case = TRUE)
+    meta <- cbind(meta[1], meta[ , -omit_columns])
+
     meta <- MapBarcode(barcodes, meta)
     # Create metalist (no IDs yet)
     meta <- lapply(2:ncol(meta), function(i) CreateMetadataObject(meta[[i]], colnames(meta)[i]))
@@ -161,8 +162,8 @@ ImportMetadata <- function(arg.json) {
     return(jsonlite::toJSON(report))
   }
   arg <- ReadJSON(arg.json)
-  logger <- Logger$new(name="ImportMetadata")
-  return(logger$catch(try(DoProcess())))
+  
+  return(try(DoProcess()))
 }
 
 CreateMetadataObject <- function(x, name) {
@@ -228,29 +229,26 @@ GetMetadata <- function(study_id) {
   meta_data <- lapply(paste0("/original_metadata/", metaName) , ReadBioTuringRawH5Slot, filepath=filepath) 
   names(meta_data) <- metaName
   
-  # meta_from_file <- GetMetadataFromFile(study_id)
-  
-  # h5_barcode_slot <- "h5_barcodes"
-  # barcodes <- ReadBioTuringRawH5Slot(filepath, "/barcodes")
-  # order <- match(meta_from_file[[h5_barcode_slot]], barcodes)
-  # stopifnot(all(meta_from_file[[h5_barcode_slot]] %in% barcodes))
-  
-  # omit_columns <- grep("Barcodes", colnames(meta_from_file), ignore.case = TRUE) 
-  # meta_from_file <- meta_from_file[order, -omit_columns]
-  # meta_data <- cbind(meta_data, meta_from_file)
   return(meta_data)
 }
 
-GetMetadataFromFile <- function(study_id) { # Get Metadata previously collected by data team
-  meta_path <- ConnectPath(arg$meta_dir, paste0(study_id, '.tsv'))
-  if (!file.exists(meta_path)) {
-    log4r::warn(file_logger, paste("Metadata file does not exists for", study_id))
-    return(NULL)
-  }
-  metadata <- read.csv(meta_path, sep="\t", check.names = FALSE)
-  stopifnot("h5_barcodes" %in% colnames(metadata))
-  return(metadata)
+AddMetadataFromFile <- function(arg, output_path, study_id) {
+  unzip(output_path, exdir = arg$output_dir)
+  setwd(arg$output_dir)
+  old_dir <- unzip(output_path, list=TRUE)$Name[1]
+  import_arg <- list(input_path=ConnectPath(arg$meta_dir, paste0(study_id, '.tsv')),
+                  data_path=ConnectPath(old_dir, "/main"),
+                  raw_h5 = GetPath(study_id),
+                  output_path= ConnectPath(arg$output_dir, old_dir, 'main/metadata'),
+                  type = "single",
+                  email = "vu@bioturing.com",
+                  unique_limit = 100,
+                  bbrowser_version = "2.9.23")
+  ImportMetadata(jsonlite::toJSON(import_arg))
+  zip::zip(basename(paste0(study_id, '.bcs')), old_dir, compression_level=1)
+  unlink(old_dir)
 }
+
 
 GetPath <- function(study_id) {
   return(ConnectPath(arg$raw_path, paste0(study_id, '.hdf5')))
@@ -578,21 +576,27 @@ CombineParam <- function(default_params, study_params) {
   return(study_params)
 }
 
-RunPipeline <- function(study_id, arg) {
+RunPipeline <- function(study_id, arg, add_meta = FALSE) {
   RAW_PATH <- arg$raw_path
   OUT_DIR <- arg$output_dir
   OLD_DATA <- arg$old_data
 
   filepath <- ConnectPath(RAW_PATH, paste0(study_id, '.hdf5'))
   output_path <- ConnectPath(OUT_DIR, paste0(study_id, '.bcs'))
-  if (file.exists(output_path)) {
-    print(paste("This study has already been process:", study_id))
-    return(FALSE)
-  }
   # default_logger <- log4r::logger()
   log_file <- ConnectPath(OUT_DIR, paste0(study_id, ".log"))
   file_logger <- log4r::logger(appenders = c(log4r::console_appender(), log4r::file_appender(log_file)))
   
+  if (file.exists(output_path)) {
+    print(paste("This study has already been process:", study_id))
+
+    if (add_meta) {
+      log4r::info(file_logger, paste("Adding metadata from file"))
+      AddMetadataFromFile(arg, output_path, study_id)
+    }
+    return(FALSE)
+  }
+
   if (file.exists(log_file)) {
     print(paste("WARNING: log file exist, this might cause some conflict in log: ", log_file))
     log4r::info(file_logger, paste("---------***---------"))
@@ -718,39 +722,17 @@ RunPipeline <- function(study_id, arg) {
     paste("Cluster", obj@meta.data$bioturing_graph),
     levels = paste("Cluster", sort(unique(obj@meta.data$bioturing_graph)))
   )
-  # TODO: Remove metadata: bioturing_graph and RNA_snn_res.0.8
-  ## 
   
-  # Import metadata
-  # Check that new and old barcodes is the same, if yes, simply copy all metalist file
-  # if not, this is gonna be mind-bending
-  #
   rhdf5::h5closeAll()
   log4r::info(file_logger, paste("Exporting BCS"))
   rBCS::ExportSeurat(obj, output_path, overwrite=TRUE)
+  
   unzip(output_path, exdir = arg$output_dir)
   setwd(arg$output_dir)
   old_dir <- unzip(output_path, list=TRUE)$Name[1]
-  # file.rename(old_dir, study_id)
-  
-  # meta_from_file <- GetMetadataFromFile(study_id)
-  # omit_columns <- grep("Barcodes", colnames(meta_from_file), ignore.case = TRUE) 
-  # meta_from_file <- meta_from_file[ , -omit_columns]
-
   log4r::info(file_logger, paste("Adding metadata from file"))
-  import_arg <- list(input_path=ConnectPath(arg$meta_dir, paste0(study_id, '.tsv')),
-                    data_path=ConnectPath(old_dir, "/main"),
-                    output_path= ConnectPath(arg$output_dir, old_dir, 'main/metadata'),
-                    type = "single",
-                    email = "vu@bioturing.com",
-                    unique_limit = 100,
-                    bbrowser_version = "2.9.23")
-  ImportMetadata(jsonlite::toJSON(import_arg))
-  log4r::info(file_logger, paste("Generating argument for ProcessFromObject..."))
-  GenerateImportArg(study_id, arg$output_dir)
-  browser()
-  zip::zip(basename(paste0(study_id, '.bcs')), old_dir, compression_level=1)
-  log4r::info(file_logger, paste("Zipping..."))
+  AddMetadataFromFile(arg, output_path, study_id)
+  
   log4r::info(file_logger, paste("FINISHED"))
 }
 
