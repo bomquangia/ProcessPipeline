@@ -1,5 +1,190 @@
 library(rhdf5)
 
+#' Write annotations
+#'
+#' @param arg argument from nodeJS
+#' @export
+ImportMetadata <- function(arg.json) {
+  MapBarcode <- function(barcodes, meta) {
+    # Filter cells that are not in the dataset
+    index.matches <- NoraSC::MatchBarcodes(meta[[1]], barcodes)
+    
+    meta <- meta[which(!is.na(index.matches)), , drop = FALSE]
+    index.matches <- index.matches[!is.na(index.matches)]
+    rownames(meta) <- NULL
+    if (length(index.matches) == 0) {
+      stop("Could not find any barcode that can match your data")
+    }
+
+    # Extend metadata table to fit the actual cell number
+    is.numeric <- sapply(meta, IsNumeric)
+    meta2 <- lapply(seq_along(is.numeric), function(i) {
+      if (is.numeric[i]) {
+        return(rep(NA, length(barcodes)))
+      } else {
+        return(rep("Unassigned", length(barcodes)))
+      }
+    })
+    names(meta2) <- colnames(meta)
+    meta2$barcodes <- barcodes
+    for (i in seq_along(is.numeric)[-1]) {
+      if (is.numeric[i]) {
+        meta2[[i]][index.matches] <- as.numeric(meta[[i]])
+      } else {
+        meta2[[i]][index.matches] <- as.character(meta[[i]])
+      }
+    }
+    meta2 <- as.data.frame(meta2, check.names=FALSE, stringsAsFactors=FALSE)
+
+    return(meta2)
+  }
+
+  PrettifyNames <- function(x) {
+    x[1] <- "barcodes"
+    return(gsub("[\n|\r]", " ", x))
+  }
+
+  ReadMetadataTable <- function(filepath) {
+    special.names <- c("Graph-based clusters", "Batch", "Total count", "Total expressed feature")
+    data <- ReadPlainTextTable(filepath)
+    colnames(data) <- PrettifyNames(colnames(data))
+    types <- as.character(sapply(data, function(x) class(x)[1]))
+    
+    if (any(duplicated(data[[1]]))) {
+      stop("Duplicated barcodes in ", basename(filepath))
+    }
+    valid.column <- sapply(seq_along(types), function(i) {
+      if (types[i] == "numeric") {
+        return(TRUE)
+      } else {
+        return(length(unique(data[[i]])) <= arg$unique_limit)
+      }
+    })
+    valid.column[1] <- TRUE # always needs barcodes
+    data <- data[, valid.column, drop=FALSE]
+    data <- data[, !(names(data) %in% special.names), drop=FALSE]
+    return(data)
+  }
+
+  CreateMetaMultiBatch <- function(input.dir) {
+    meta.tmp <- lapply(1:length(input.dir), function(index) {
+      meta.file <- input.dir[index]
+      if (!is.na(meta.file)) {
+        data <- ReadMetadataTable(meta.file)
+        logger$cat(basename(meta.file), ":", dim(data))
+        logger$cat("Add batch prefix to barcodes")
+        data[[1]] <- paste(index, data[[1]], sep = "_")
+        return(data)
+      }
+      return(NULL)
+    })
+    meta.tmp <- meta.tmp[!sapply(meta.tmp, is.null)]
+    meta <- plyr::rbind.fill(meta.tmp)
+    return(meta)
+  }
+
+  CreateMeta <- function(input.dir, status) {
+    if (status == "single") {
+      logger$cat('Read metadata for a single-batch study')
+      meta <- ReadMetadataTable(input.dir[1])
+    } else if (length(input.dir) == 1) {
+      logger$cat('Read one metadata for a multiple-batches study')
+      meta <- ReadMetadataTable(input.dir)
+    } else {
+      logger$cat('Read multiple metadata for a multiple-batches study')
+      meta <- CreateMetaMultiBatch(input.dir)
+    }
+    if (is.null(ncol(meta)) || ncol(meta) < 2) {
+      stop("No valid metadata is found")
+    }
+    return(meta)
+  }
+
+  DoProcess <- function() {
+    logger$cat("Reading barcodes")
+    # barcodes <- as.character(rhdf5::h5read(ConnectPath(arg$data_path, "matrix.hdf5"), "bioturing/barcodes"))
+    barcodes <- ReadBioTuringRawH5Slot(GetPath(study_id), "/barcodes")
+    logger$cat("Creating a template")
+    meta <- CreateMeta(arg$input_path, arg$type)
+    meta <- MapBarcode(barcodes, meta)
+    # Create metalist (no IDs yet)
+    meta <- lapply(2:ncol(meta), function(i) CreateMetadataObject(meta[[i]], colnames(meta)[i]))
+
+    # Replace old metadata
+    meta.old <- ReadJSON(ConnectPath(arg$data_path, "metadata", "metalist.json"))$content
+    names <- sapply(meta, function(x) x$name)
+    names.old <- sapply(meta.old, function(x) x$name)
+    report <- list(replaced=names[names %in% names.old], new=names[!names %in% names.old])
+    for (info in meta[names %in% names.old]) {
+      i <- match(info$name, names.old)
+      info.old <- meta.old[[i]]
+      if (is.null(names(info.old$history))) {
+        info$history <- c(info.old$history, CreateHistory(list(email=arg$email, description="Replaced from file")))
+      } else {
+        info$history <- CreateHistory(list(email=arg$email, description="Replaced from file"))
+      }
+      meta.old[[i]] <- info
+    }
+
+    # Add new metadata
+    meta <- meta[!names %in% names.old]
+    names(meta) <- sapply(seq_along(meta), function(x) GenerateUUID())
+    meta <- lapply(meta, function(info) {
+      info$history <- CreateHistory(list(email=arg$email, description="Import from file"))
+      return(info)
+    })
+    meta.old <- c(meta.old, meta)
+
+    # Write metalist
+    CreateDir(arg$output_path)
+    ids <- names(meta.old)
+    meta.old <- lapply(ids, function(id) {
+      info <- meta.old[[id]]
+
+      # Force list before writing json
+      info$type <- if (is.null(info$type)) "category" else info$type
+      if (info$type == "category") {
+        info$clusterName <- as.list(info$clusterName)
+        info$clusterLength <- as.list(info$clusterLength)
+      }
+
+      if (info$name %in% report$replaced || info$name %in% report$new) {
+        WriteJSON(info, ConnectPath(arg$output_path, paste0(id, ".json")), encrypt=IsBioTuring(arg$email), auto_unbox=TRUE)
+      }
+      info$clusters <- NULL
+      return(info)
+    })
+    names(meta.old) <- ids
+    WriteJSON(list(content=meta.old, version=1),
+        ConnectPath(arg$output_path, "metalist.json"), auto_unbox=TRUE)
+
+    return(jsonlite::toJSON(report))
+  }
+  arg <- ReadJSON(arg.json)
+  logger <- Logger$new(name="ImportMetadata")
+  return(logger$catch(try(DoProcess())))
+}
+
+CreateMetadataObject <- function(x, name) {
+  info <- list(clusters=x, name=name)
+  if (is(x, "numeric")) {
+    info$type <- "numeric"
+    return(info)
+  } else {
+    info$type <- "category"
+    info$clusters[is.na(info$clusters)] <- "Unassigned" 
+    info$clusterName <- names(sort(table(info$clusters), decreasing=TRUE)) # Sort groups by size
+    info$clusterName <- unique(c("Unassigned", info$clusterName)) # Unassigned is always 1st
+    info$clusters <- factor(info$clusters, levels=info$clusterName) # Factorize labels to indices
+    info$clusters <- as.numeric(info$clusters) - 1 # Convert to JS base-0 indices
+    info$clusterLength <- sapply(seq_along(info$clusterName), function(i) {
+      return(sum(info$clusters == (i - 1)))
+    })
+  }
+  return(info)
+}
+
+
 NormalizeADT <- function(data) {
   data <- Seurat::NormalizeData(data, assay = "ADT", normalization.method = "CLR")
   data <- Seurat::ScaleData(data, assay = "ADT")
@@ -10,24 +195,24 @@ IsEnsemblID <- function(x) {
   return(any(grepl("^ENS", x[1: min(50, length(x))])))
 }
 
-readMtxFromThaoH5 <- function(filepath) {
+ReadMtxFromBioTuringRawH5 <- function(filepath) {
   ## TODO: Check file path exist
 
   counts <- Matrix::sparseMatrix(
-    j = readThaoH5Slot(filepath, "/indices") + 1, # Why j, not i? How to differentiate from j and i?
-    p = readThaoH5Slot(filepath, "/indptr"),
-    x = readThaoH5Slot(filepath, "/data"),
-    dims = readThaoH5Slot(filepath, "/shape"),
+    j = ReadBioTuringRawH5Slot(filepath, "/indices") + 1, # Why j, not i? How to differentiate from j and i?
+    p = ReadBioTuringRawH5Slot(filepath, "/indptr"),
+    x = ReadBioTuringRawH5Slot(filepath, "/data"),
+    dims = ReadBioTuringRawH5Slot(filepath, "/shape"),
     dimnames = list(
-      readThaoH5Slot(filepath, "/features"),
-      readThaoH5Slot(filepath, "/barcodes")
+      ReadBioTuringRawH5Slot(filepath, "/features"),
+      ReadBioTuringRawH5Slot(filepath, "/barcodes")
     )
   )
   print(dim(counts))
   return(counts)
 }
 
-readThaoH5Slot <- function(filepath, slot) {
+ReadBioTuringRawH5Slot <- function(filepath, slot) {
   return(rhdf5::h5read(filepath, slot, drop=TRUE))
 }
 
@@ -40,10 +225,31 @@ GetMetadata <- function(study_id) {
     return(NULL)
   }
   metaName <- h5Info$name[metaIdx]
-  print(metaName)
-  meta_data <- lapply(paste0("/original_metadata/", metaName) , readThaoH5Slot, filepath=filepath) 
+  meta_data <- lapply(paste0("/original_metadata/", metaName) , ReadBioTuringRawH5Slot, filepath=filepath) 
   names(meta_data) <- metaName
+  
+  # meta_from_file <- GetMetadataFromFile(study_id)
+  
+  # h5_barcode_slot <- "h5_barcodes"
+  # barcodes <- ReadBioTuringRawH5Slot(filepath, "/barcodes")
+  # order <- match(meta_from_file[[h5_barcode_slot]], barcodes)
+  # stopifnot(all(meta_from_file[[h5_barcode_slot]] %in% barcodes))
+  
+  # omit_columns <- grep("Barcodes", colnames(meta_from_file), ignore.case = TRUE) 
+  # meta_from_file <- meta_from_file[order, -omit_columns]
+  # meta_data <- cbind(meta_data, meta_from_file)
   return(meta_data)
+}
+
+GetMetadataFromFile <- function(study_id) { # Get Metadata previously collected by data team
+  meta_path <- ConnectPath(arg$meta_dir, paste0(study_id, '.tsv'))
+  if (!file.exists(meta_path)) {
+    log4r::warn(file_logger, paste("Metadata file does not exists for", study_id))
+    return(NULL)
+  }
+  metadata <- read.csv(meta_path, sep="\t", check.names = FALSE)
+  stopifnot("h5_barcodes" %in% colnames(metadata))
+  return(metadata)
 }
 
 GetPath <- function(study_id) {
@@ -52,16 +258,16 @@ GetPath <- function(study_id) {
 
 GetInfo <- function(study_id) {
   filepath <- GetPath(study_id)
-  batch <- readThaoH5Slot(filepath, "/batch")
-  species <- readThaoH5Slot(filepath, "/species")
-  features <- readThaoH5Slot(filepath, '/features') 
+  batch <- ReadBioTuringRawH5Slot(filepath, "/batch")
+  species <- ReadBioTuringRawH5Slot(filepath, "/species")
+  features <- ReadBioTuringRawH5Slot(filepath, '/features') 
   ADT_indices <- grepl("ADT-", features)
   return(list(batch=batch, species = species, ADT_indices=ADT_indices))
 }
 
 isCITESEQ <- function(study_id) {
   filepath <- GetPath(study_id)
-  features <- readThaoH5Slot(filepath, '/features') 
+  features <- ReadBioTuringRawH5Slot(filepath, '/features') 
   ADT_indices <- grepl("ADT-", features)
   hasADT <- sum(ADT_indices) > 0
   if (hasADT) {
@@ -137,14 +343,14 @@ SanityCheck <- function(filepath, file_logger=NULL) {
   if (is.null(file_logger)) {
     file_logger = log4r::logger()
   }
-  dims = readThaoH5Slot(filepath, "/shape")
+  dims = ReadBioTuringRawH5Slot(filepath, "/shape")
   # print("Dimensions")
   # print(dims)
 
   # log4r::info(file_logger, paste("Dimensions", dims[1], dims[2]))  
 
-  features <- readThaoH5Slot(filepath, "/features")
-  barcodes <- readThaoH5Slot(filepath, "/barcodes")
+  features <- ReadBioTuringRawH5Slot(filepath, "/features")
+  barcodes <- ReadBioTuringRawH5Slot(filepath, "/barcodes")
 
   n <- length(features)
   print(features[c(1:5, (n-5):n)])
@@ -158,7 +364,7 @@ SanityCheck <- function(filepath, file_logger=NULL) {
   log4r::info(file_logger, paste("Example barcodes: "))
   log4r::info(file_logger, paste(do.call(paste, as.list(barcodes[1:5]))))
 
-  batch <- readThaoH5Slot(filepath, "/batch")
+  batch <- ReadBioTuringRawH5Slot(filepath, "/batch")
   # print(paste0("Number of batches: ", length(unique(batch))))
   # print(unique(batch))
 
@@ -209,14 +415,14 @@ GetClonotypeData <- function(study_id) {
   if (!'clonotype' %in% rhdf5::h5ls(filepath)$name) {
     return(NULL)
   }
-  v_gene <- readThaoH5Slot(filepath, "/clonotype/v_gene")
-  j_gene <- readThaoH5Slot(filepath, "/clonotype/j_gene")
-  cdr3 <- readThaoH5Slot(filepath, "/clonotype/cdr3")
-  chain <- readThaoH5Slot(filepath, "/clonotype/chain")
-  barcode <- readThaoH5Slot(filepath, "/clonotype/barcode")
-  raw_clonotype_id <- readThaoH5Slot(filepath, "/clonotype/raw_clonotype_id")
-  full_length <- readThaoH5Slot(filepath, "/clonotype/full_length")
-  productive <- readThaoH5Slot(filepath, "/clonotype/productive")
+  v_gene <- ReadBioTuringRawH5Slot(filepath, "/clonotype/v_gene")
+  j_gene <- ReadBioTuringRawH5Slot(filepath, "/clonotype/j_gene")
+  cdr3 <- ReadBioTuringRawH5Slot(filepath, "/clonotype/cdr3")
+  chain <- ReadBioTuringRawH5Slot(filepath, "/clonotype/chain")
+  barcode <- ReadBioTuringRawH5Slot(filepath, "/clonotype/barcode")
+  raw_clonotype_id <- ReadBioTuringRawH5Slot(filepath, "/clonotype/raw_clonotype_id")
+  full_length <- ReadBioTuringRawH5Slot(filepath, "/clonotype/full_length")
+  productive <- ReadBioTuringRawH5Slot(filepath, "/clonotype/productive")
   # What about 'c_gene, d_gene, cdr3_nt, contig_id, is_cell, raw_concesus_id?
   return(as.data.frame(list(v_gene=v_gene, j_gene=j_gene, cdr3=cdr3, chain=chain, barcode=barcode, raw_clonotype_id=raw_clonotype_id, full_length=full_length, productive=productive)))
   # return(list(v_gene=v_gene, j_gene=j_gene, cdr3=cdr3, chain=chain, barcode=barcode, raw_clonotype_id=raw_clonotype_id, full_length=full_length, productive=productive))
@@ -345,7 +551,7 @@ GetUnit <- function(study_id, file_logger=NULL) {
   
   log4r::warn(file_logger, paste0("Count unit provided by params is either null or unknown (", info$unit, "). Attempting to guess unit from count data..."))
   filepath <- GetPath(study_id)
-  count_data <- readMtxFromThaoH5(filepath)
+  count_data <- ReadMtxFromBioTuringRawH5(filepath)
   if (sum(abs(round(count_data@x[1:1000], 0) - count_data@x[1:1000])) > 0) { # Non integer
     log4r::warn(file_logger, paste("Count unit is non integer."))
     return("not umi")
@@ -398,7 +604,7 @@ RunPipeline <- function(study_id, arg) {
 
   params <- CombineParam(arg$default_params, arg$all_study_params[[study_id]])
 
-  count_data <- readMtxFromThaoH5(filepath)
+  count_data <- ReadMtxFromBioTuringRawH5(filepath)
   
   TrimGeneName <- function(name) {
     if (!IsEnsemblID(name)) { # Only trim for EnsemblID
@@ -440,12 +646,13 @@ RunPipeline <- function(study_id, arg) {
   # clonotype_data <- FilterClonotype(clonotype_data, colnames(count_data))
   # CountFromTCRData(clonotype_data)
   meta_data <- GetMetadata(study_id)
+  
   if (!is.null(meta_data)) {
 
     for (meta_name in names(meta_data)) {
-      # print(paste("Adding metadata:", meta_name))
       log4r::info(file_logger, paste("Adding metadata:", meta_name))
-      meta <- as.numeric(meta_data[[meta_name]])
+      meta <- as.numeric(as.character(meta_data[[meta_name]]))
+      
       if (any(is.na(meta))) { # To avoid mistakenly forcing character into numeric
         meta <- meta_data[[meta_name]]
       }
@@ -472,7 +679,7 @@ RunPipeline <- function(study_id, arg) {
   if (correct_method %in% c("cca", "mnn", "harmony")) {
     # print(paste("Run batch correction for:", study_id))
     log4r::info(file_logger, paste("Run HARMONY batch correction for:", study_id))
-    batch <- readThaoH5Slot(filepath, "/batch")
+    batch <- ReadBioTuringRawH5Slot(filepath, "/batch")
     obj <- Seurat::AddMetaData(obj, batch, col.name = 'batch')
     obj <- harmony::RunHarmony(obj, "batch", plot_convergence = FALSE, verbose = TRUE, epsilon.harmony = -Inf, max.iter.harmony = 30)
     key <- 'harmony'
@@ -521,6 +728,29 @@ RunPipeline <- function(study_id, arg) {
   rhdf5::h5closeAll()
   log4r::info(file_logger, paste("Exporting BCS"))
   rBCS::ExportSeurat(obj, output_path, overwrite=TRUE)
+  unzip(output_path, exdir = arg$output_dir)
+  setwd(arg$output_dir)
+  old_dir <- unzip(output_path, list=TRUE)$Name[1]
+  # file.rename(old_dir, study_id)
+  
+  # meta_from_file <- GetMetadataFromFile(study_id)
+  # omit_columns <- grep("Barcodes", colnames(meta_from_file), ignore.case = TRUE) 
+  # meta_from_file <- meta_from_file[ , -omit_columns]
+
+  log4r::info(file_logger, paste("Adding metadata from file"))
+  import_arg <- list(input_path=ConnectPath(arg$meta_dir, paste0(study_id, '.tsv')),
+                    data_path=ConnectPath(old_dir, "/main"),
+                    output_path= ConnectPath(arg$output_dir, old_dir, 'main/metadata'),
+                    type = "single",
+                    email = "vu@bioturing.com",
+                    unique_limit = 100,
+                    bbrowser_version = "2.9.23")
+  ImportMetadata(jsonlite::toJSON(import_arg))
+  log4r::info(file_logger, paste("Generating argument for ProcessFromObject..."))
+  GenerateImportArg(study_id, arg$output_dir)
+  browser()
+  zip::zip(basename(paste0(study_id, '.bcs')), old_dir, compression_level=1)
+  log4r::info(file_logger, paste("Zipping..."))
   log4r::info(file_logger, paste("FINISHED"))
 }
 
