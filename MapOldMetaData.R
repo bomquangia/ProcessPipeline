@@ -22,20 +22,6 @@ CheckBarcodes <- function(study_id) {
   return(list(study_id = study_id, Number_Match= sum(match), Old_barcodes = length(old_barcodes), New_barcodes = length(new_barcodes)))
 }
 
-# CheckBarcodeWrapper <- function(study_id) {
-#   print(paste0("Checking study: ", study_id))
-
-#   if (!file.exists(new_study)) {
-#     print('Not yet finished or you are pointing to the wrong directory for new study')
-#     return(NULL)
-#   }
-#   if (!file.exists(old_study)) {
-#     print('No data of old study available or you are pointing to the wrong directory for new study')
-#     return(NULL)
-#   }
-#   CheckBarcodes(new_study, old_study)
-# }
-
 HexToRaw <- function(text) {
   vals <- matrix(as.integer(as.hexmode(strsplit(text, "")[[1]])), ncol=2, byrow=TRUE)
   vals <- vals %*% c(16, 1)

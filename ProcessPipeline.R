@@ -245,8 +245,8 @@ AddMetadataFromFile <- function(arg, output_path, study_id) {
                   unique_limit = 100,
                   bbrowser_version = "2.9.23")
   ImportMetadata(jsonlite::toJSON(import_arg))
-  zip::zip(basename(paste0(study_id, '.bcs')), old_dir, compression_level=1)
-  unlink(old_dir)
+  zip::zip(paste0(study_id, '.bcs'), old_dir, compression_level=1)
+  unlink(old_dir, recursive = TRUE)
 }
 
 
@@ -388,18 +388,12 @@ CreateSeuratObj <- function(data, name, file_logger=NULL) {
       min.cells = 0, min.features = 0)
 
   if (length(adt_idx) > 0) {
-    # print(paste('Adding ADT assay. Dimension:', nrow(adt_counts), ncol(adt_counts)))
+    
     log4r::info(file_logger, paste('Adding ADT assay. Dimension:', nrow(adt_counts), ncol(adt_counts)))
-    # print("Removing `ADT-` prefix to avoid conflicting with rBCS...")
     log4r::warn(file_logger, paste("Removing `ADT-` prefix to avoid conflicting with rBCS..."))
-    # print("ADT feature names before removal")
-    # print(rownames(adt_counts)[1:5])
-
     log4r::info(file_logger, paste("ADT feature names before removal"))
     log4r::info(file_logger, paste(do.call(paste, as.list(rownames(adt_counts)[1:5]))))
     rownames(adt_counts) <- gsub("^ADT-", "", rownames(adt_counts))
-    # print("ADT feature names after removal")
-    # print(rownames(adt_counts)[1:5])
     log4r::info(file_logger, paste("ADT feature names after removal"))
     log4r::info(file_logger, paste(do.call(paste, as.list(rownames(adt_counts)[1:5]))))
 
@@ -427,7 +421,7 @@ GetClonotypeData <- function(study_id) {
 }
 
 FilterClonotype <- function(data, bc) {
-  # stopifnot(all(match(data$barcode, bc)))
+  
   ### Filter by full_length and productive
   data <- data[
       as.logical((tolower(data$full_length) == 'true') * (tolower(data$productive) == 'true')), ]
@@ -630,7 +624,6 @@ RunPipeline <- function(study_id, arg, add_meta = FALSE) {
   }
 
   if (any(duplicated(colnames(count_data)))) {
-    # print("There is duplicated barcodes")
     log4r::error(file_logger, paste("There is duplicated barcodes, stop processing."))
     return(FALSE)
   }
@@ -714,7 +707,6 @@ RunPipeline <- function(study_id, arg, add_meta = FALSE) {
     obj <- Seurat::FindNeighbors(obj, dims = 1:n.dim.use, reduction = "pca")
   }
   
-  # print("Running Louvain")
   log4r::info(file_logger, paste("Running Louvain"))
   obj <- Seurat::FindClusters(obj, verbose = FALSE)
   obj@meta.data$bioturing_graph <- as.numeric(obj@meta.data$seurat_clusters)
@@ -725,11 +717,8 @@ RunPipeline <- function(study_id, arg, add_meta = FALSE) {
   
   rhdf5::h5closeAll()
   log4r::info(file_logger, paste("Exporting BCS"))
-  rBCS::ExportSeurat(obj, output_path, overwrite=TRUE)
+  rBCS::ExportSeurat(obj, output_path, overwrite=FALSE)
   
-  unzip(output_path, exdir = arg$output_dir)
-  setwd(arg$output_dir)
-  old_dir <- unzip(output_path, list=TRUE)$Name[1]
   log4r::info(file_logger, paste("Adding metadata from file"))
   AddMetadataFromFile(arg, output_path, study_id)
   
@@ -747,12 +736,15 @@ GenerateImportArg <- function(study_id, bcs_dir = output_dir, write_dir = "/User
   import_arg <- list()
   import_arg$group_name_aws <- NULL
   import_arg$input_path <- ConnectPath(bcs_dir, paste0(study_id, '.bcs'))
-  import_arg$path_type <- "local"
+  import_arg$path_type <- "server" # `local` or `server`
   import_arg$batch_names <- NULL
   import_arg$input_id <- c(uuid::UUIDgenerate())
-  import_arg$correct_method <- GetBatchCorrection(study_id)
+  
+  correct_method <- GetBatchCorrection(study_id)
+  import_arg$correct_method <- ifelse(correct_method != "none", "harmony", "none") #Study in production could have "cca" "mnn" as correct_method, but for this pipeline, we only use Harmony
+  
   import_arg$type <- c("bcs")
-  import_arg$unit <- "unknown" # TODO: Check this again 
+  import_arg$unit <- GetUnit(study_id) # TODO: Check this again
   import_arg$email <- "vu@bioturing.com"
   import_arg$species <- info$species
   import_arg$log_path <- ConnectPath(write_dir, study_id, "tmp/submit.log")
@@ -765,7 +757,9 @@ GenerateImportArg <- function(study_id, bcs_dir = output_dir, write_dir = "/User
   import_arg$filter <- list(cell=0, gene = c(0,0), mito = 100, top = 2000)
   import_arg$subcluster <- "none"
   import_arg$db_path <- "/Users/bioturing/.BioTBData/App/Model"
+  # import_arg$db_path <- "_$_DB_MODEL_PATH_$_/"
   import_arg$output_path <- ConnectPath(write_dir, study_id, "main")
+  # import_arg$output_path <- ConnectPath("_$_PRIVATE_USER_STUDIES_PATH_$_/vu@bioturing.com", study_id, "main")
   import_arg$create_adt_gallery <- TRUE
   import_arg$refIndex <- "unknown"
   import_arg$hash_id <- uuid::UUIDgenerate()
@@ -779,9 +773,9 @@ GenerateImportArg <- function(study_id, bcs_dir = output_dir, write_dir = "/User
 }
 
 
-# lapply(study_list, function(study_id) {
-#   import_arg <- GenerateImportArg(study_id, bcs_dir = "/mnt2/vu/script/output/batch_4", write_dir='')
-#   jsonlite::write_json(import_arg, ConnectPath(output_dir, paste0(study_id, '.json')))
+# lapply(study_list_4, function(study_id) {
+#   import_arg <- GenerateImportArg(study_id, bcs_dir = "/mnt2/vu/script/output/")
+#   jsonlite::write_json(import_arg, ConnectPath(OUTPUT_DIR, paste0(study_id, '.json')))
 # })
 
 # TODO: Catch more messages to log.
