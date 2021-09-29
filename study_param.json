@@ -11,5 +11,8 @@
   },
   "GSE124395": {
     "correct_method": "none"
-  } 
+  },
+  "GSE118184": {
+    "correct_method": "cca"
+  }
 }

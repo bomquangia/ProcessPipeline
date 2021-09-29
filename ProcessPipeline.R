@@ -1,13 +1,13 @@
-library(rhdf5)
+source("/mnt2/vu/script/ProcessPipeline/BatchCorrection.R")
+source("/mnt2/vu/script/ProcessPipeline/ReduceDimension.R")
+source("/mnt2/vu/script/ProcessPipeline/FindClusters.R")
+source("/mnt2/vu/script/ProcessPipeline/MapOldMetaData.R")
+source("/mnt2/vu/script/ProcessPipeline/MatchBarcodes.R")
 
-#' Write annotations
-#'
-#' @param arg argument from nodeJS
-#' @export
-ImportMetadata <- function(arg.json) {
+ImportMetadata <- function(arg.json, file_logger) {
   MapBarcode <- function(barcodes, meta) {
     # Filter cells that are not in the dataset
-    index.matches <- NoraSC::MatchBarcodes(meta[[1]], barcodes)
+    index.matches <- MatchBarcodes(meta[[1]], barcodes)
     
     meta <- meta[which(!is.na(index.matches)), , drop = FALSE]
     index.matches <- index.matches[!is.na(index.matches)]
@@ -45,7 +45,7 @@ ImportMetadata <- function(arg.json) {
   }
 
   ReadMetadataTable <- function(filepath) {
-    special.names <- c("Graph-based clusters", "Batch", "Total count", "Total expressed feature")
+    special.names <- c("Graph-based clusters", "Graph based", "Batch", "Total count", "Total expressed feature")
     data <- NoraSC::ReadPlainTextTable(filepath)
     colnames(data) <- PrettifyNames(colnames(data))
     types <- as.character(sapply(data, function(x) class(x)[1]))
@@ -87,7 +87,6 @@ ImportMetadata <- function(arg.json) {
       
       meta <- ReadMetadataTable(input.dir[1])
     } else if (length(input.dir) == 1) {
-      
       meta <- ReadMetadataTable(input.dir)
     } else {
       
@@ -103,10 +102,14 @@ ImportMetadata <- function(arg.json) {
     barcodes <- as.character(rhdf5::h5read(ConnectPath(arg$data_path, "matrix.hdf5"), "bioturing/barcodes"))
     meta <- CreateMeta(arg$input_path, arg$type)
     
-    omit_columns <- grep("Barcodes", colnames(meta), ignore.case = TRUE)
-    meta <- cbind(meta[1], meta[ , -omit_columns])
-
+    omit_columns <- grepl("Barcodes", colnames(meta), ignore.case = TRUE)
+    omit_columns[1] <- FALSE
+    
+    meta <- meta[, !omit_columns]
     meta <- MapBarcode(barcodes, meta)
+    log4r::info(file_logger, paste("Name of metadata to be import: "))
+    log4r::info(file_logger, paste(names(meta)))
+    
     # Create metalist (no IDs yet)
     meta <- lapply(2:ncol(meta), function(i) CreateMetadataObject(meta[[i]], colnames(meta)[i]))
 
@@ -231,9 +234,12 @@ GetMetadata <- function(study_id) {
   return(meta_data)
 }
 
-AddMetadataFromFile <- function(arg, output_path, study_id) {
-  unzip(output_path, exdir = arg$output_dir)
+AddMetadataFromFile <- function(arg, output_path, study_id, file_logger=NULL) {
+  if (is.null(file_logger)) {
+    file_logger = log4r::logger()
+  }
   setwd(arg$output_dir)
+  unzip(output_path, exdir = arg$output_dir, unzip="unzip")
   old_dir <- unzip(output_path, list=TRUE)$Name[1]
   import_arg <- list(input_path=ConnectPath(arg$meta_dir, paste0(study_id, '.tsv')),
                   data_path=ConnectPath(old_dir, "/main"),
@@ -243,7 +249,7 @@ AddMetadataFromFile <- function(arg, output_path, study_id) {
                   email = "vu@bioturing.com",
                   unique_limit = 100,
                   bbrowser_version = "2.9.23")
-  ImportMetadata(jsonlite::toJSON(import_arg))
+  ImportMetadata(jsonlite::toJSON(import_arg), file_logger)
   zip::zip(paste0(study_id, '.bcs'), old_dir, compression_level=1)
   unlink(old_dir, recursive = TRUE)
 }
@@ -296,44 +302,6 @@ ConnectPath <- function(...) {
     res <- gsub('\\/', '\\\\', res)
   }
   return(res)
-}
-
-RunTSNE <- function(data, param) {
-  set.seed(param$seed)
-  return(Rtsne::Rtsne(data, check_duplicates=FALSE, pca=FALSE,
-                      dims=param$dims, perplexity=param$perplexity, verbose=FALSE)$Y)
-}
-
-RunUMAP <- function(data, param) {
-  set.seed(param$seed)
-  return(uwot::umap(data, n_neighbors = param$perplexity, n_components = param$dims))
-}
-
-GetBatchCorrection <- function(study_id, file_logger = NULL) {
-  if (is.null(file_logger)) {
-    file_logger = log4r::logger()
-  }
-  log4r::info(file_logger, paste("Getting batch correction method for", study_id))
-  info <- CombineParam(arg$default_params, arg$all_study_params[[study_id]])
-  # info <- arg$params[[study_id]]
-  correct_method <- info$correct_method
-  if (!is.null(correct_method)) {
-    log4r::info(file_logger, paste("Use batch correction method given by params:", correct_method))
-    return(correct_method)
-  }
-
-  log4r::info(file_logger, paste("Batch correction method for this study not given by params, checking number of batch..."))
-  
-  info <- RunDiagnostics(study_id, arg = arg)
-  original_n_batch <- info$original_n_batch
-  
-  if (original_n_batch == 1) {
-    log4r::info(file_logger, paste("This study only has 1 batch, setting batch correction to `none`"))
-    return("none")
-  }
-  
-  log4r::info(file_logger, paste("More than one batch, using `harmony` as batch correction method"))
-  return("harmony")
 }
 
 SanityCheck <- function(filepath, file_logger=NULL) {
@@ -534,7 +502,8 @@ GetUnit <- function(study_id, file_logger=NULL) {
     file_logger = log4r::logger()
   }
   log4r::info(file_logger, paste("Getting count unit..."))
-  info <- CombineParam(arg$default_params, arg$all_study_params[[study_id]])
+  
+  info <- GetParams(study_id, arg)
   if (!is.null(info$unit) && info$unit != 'unknown') {
     log4r::info(file_logger, paste("Using count unit provided by params..."))
     return(info$unit)
@@ -569,6 +538,19 @@ CombineParam <- function(default_params, study_params) {
   return(study_params)
 }
 
+GetParams <- function(study_id, arg, harmony_only = TRUE) {
+  params <- CombineParam(arg$default_params, arg$old_study_params[[study_id]])
+  
+  # All studies requiring batch correction will only use harmony to save computation
+  # unless it is specifically overwritten in arg$manual_params
+  if (harmony_only) {
+    params$correct_method <- ifelse(params$correct_method != "none", "harmony", "none")
+  }
+
+  params <- CombineParam(params, arg$manual_params[[study_id]])
+  return(params)
+}
+
 RunPipeline <- function(study_id, arg, add_meta = FALSE) {
   RAW_PATH <- arg$raw_path
   OUT_DIR <- arg$output_dir
@@ -585,7 +567,7 @@ RunPipeline <- function(study_id, arg, add_meta = FALSE) {
 
     if (add_meta) {
       log4r::info(file_logger, paste("Adding metadata from file"))
-      AddMetadataFromFile(arg, output_path, study_id)
+      AddMetadataFromFile(arg, output_path, study_id, file_logger)
     }
     return(FALSE)
   }
@@ -595,18 +577,22 @@ RunPipeline <- function(study_id, arg, add_meta = FALSE) {
     log4r::info(file_logger, paste("---------***---------"))
   }
   
-  # print(paste("Processing:", study_id))
   log4r::info(file_logger, paste("Processing:", study_id))
   SanityCheck(filepath, file_logger)
 
-  params <- CombineParam(arg$default_params, arg$all_study_params[[study_id]])
+  params <- GetParams(study_id, arg)
 
   count_data <- ReadMtxFromBioTuringRawH5(filepath)
   
-  TrimGeneName <- function(name) {
+  TrimGeneName <- function(name, file_logger=NULL) {
     if (!IsEnsemblID(name)) { # Only trim for EnsemblID
       return(name)
     }
+    
+    if (is.null(file_logger)) {
+    file_logger = log4r::logger()
+    }
+    
     if (any(grepl("\\.\\d+$", name))) {
       log4r::warn(file_logger, paste("Trimming suffix (eg `.1`) from EnsemblID..."))
     }
@@ -629,10 +615,8 @@ RunPipeline <- function(study_id, arg, add_meta = FALSE) {
 
   obj <- CreateSeuratObj(count_data, study_id, file_logger)
   
-  # TODO: Check this
   unit <- GetUnit(study_id, file_logger)
   if ("ADT" %in% names(obj) && unit == "umi") {
-    # print("Normalizing ADT data...")
     log4r::info(file_logger, paste("Normalizing ADT data..."))
     obj <- NormalizeADT(obj)
   }
@@ -657,69 +641,73 @@ RunPipeline <- function(study_id, arg, add_meta = FALSE) {
   }
 
   # TODO: Check unit before normalizing?
-  # print(paste("Count unit:", unit))
-  log4r::info(file_logger, paste("Count Unit", unit))
-  if (unit != 'lognorm') {
-    log4r::info(file_logger, paste("Normalizing data"))
-    obj <- Seurat::NormalizeData(obj)
-  } else {
-    log4r::info(file_logger, paste("Skip normalization."))
-  }
+  log4r::info(file_logger, paste("Count Unit:", unit))
+  
+  params$correct_method <- GetBatchCorrection(study_id, file_logger)
+  
 
-  obj <- Seurat::FindVariableFeatures(obj, nfeatures=min(params$n_variable_features, nrow(obj)))
-  obj <- Seurat::ScaleData(obj)
-  obj <- Seurat::RunPCA(obj)
+
+  batch <- ReadBioTuringRawH5Slot(filepath, "/batch")
+  obj <- Seurat::AddMetaData(obj, batch, col.name = 'bioturing_batch')
+  obj <- Preprocess(obj, params, file_logger, arg$seed)
+  obj <- ReduceDimension(obj, params, file_logger, arg$seed)
+  obj <- FindClusters(obj, file_logger, params)
+  obj@meta.data <- data.frame(
+                    bioturing_graph = paste("Cluster", as.numeric(obj@meta.data$seurat_clusters)))
+
+  # # obj <- Seurat::FindVariableFeatures(obj, nfeatures=min(params$n_variable_features, nrow(obj)))
+  # # obj <- Seurat::ScaleData(obj)
+  # # obj <- Seurat::RunPCA(obj)
   
-  correct_method <- GetBatchCorrection(study_id, file_logger)
-  key <- 'pca'
-  if (correct_method %in% c("cca", "mnn", "harmony")) {
-    # print(paste("Run batch correction for:", study_id))
-    log4r::info(file_logger, paste("Run HARMONY batch correction for:", study_id))
-    batch <- ReadBioTuringRawH5Slot(filepath, "/batch")
-    obj <- Seurat::AddMetaData(obj, batch, col.name = 'batch')
-    obj <- harmony::RunHarmony(obj, "batch", plot_convergence = FALSE, verbose = TRUE, epsilon.harmony = -Inf, max.iter.harmony = 30)
-    key <- 'harmony'
-  } else {
-    # print(paste("Not correct batch for:", study_id))
-    log4r::info(file_logger, paste("Not correct batch for:", study_id))
-  }
+  # key <- 'pca'
+  # if (correct_method %in% c("cca", "mnn", "harmony")) {
+  #   # print(paste("Run batch correction for:", study_id))
+  #   log4r::info(file_logger, paste("Run HARMONY batch correction for:", study_id))
+  #   batch <- ReadBioTuringRawH5Slot(filepath, "/batch")
+  #   obj <- Seurat::AddMetaData(obj, batch, col.name = 'batch')
+  #   obj <- harmony::RunHarmony(obj, "batch", plot_convergence = FALSE, verbose = TRUE, epsilon.harmony = -Inf, max.iter.harmony = 30)
+  #   key <- 'harmony'
+  # } else {
+  #   # print(paste("Not correct batch for:", study_id))
+  #   log4r::info(file_logger, paste("Not correct batch for:", study_id))
+  # }
   
-  mat <- obj@reductions[[key]]@cell.embeddings
-  mat <- mat[, 1:min(ncol(mat), 50)]
+  # mat <- obj@reductions[[key]]@cell.embeddings
+  # mat <- mat[, 1:min(ncol(mat), 50)]
   
-  # Run TSNE and UMAP
-  log4r::info(file_logger, paste("Running T-SNE and UMAP"))
-  tsne.embeddings <- RunTSNE(mat, params)
-  obj@reductions[['tSNE']] <- Seurat::CreateDimReducObject(embeddings=tsne.embeddings, assay="RNA", key=paste0(key, "_"))
+  # # Run TSNE and UMAP
+  # log4r::info(file_logger, paste("Running T-SNE and UMAP"))
+  # tsne.embeddings <- RunTSNE(mat, params)
+  # obj@reductions[['tSNE']] <- Seurat::CreateDimReducObject(embeddings=tsne.embeddings, assay="RNA", key=paste0(key, "_"))
   
-  umap.embeddings <- RunUMAP(mat, params) 
-  obj@reductions[['UMAP']] <- Seurat::CreateDimReducObject(embeddings=umap.embeddings, assay="RNA", key=paste0(key, "_"))
+  # umap.embeddings <- RunUMAP(mat, params) 
+  # obj@reductions[['UMAP']] <- Seurat::CreateDimReducObject(embeddings=umap.embeddings, assay="RNA", key=paste0(key, "_"))
   
   # Run Graph-based cluster
-  log4r::info(file_logger, paste("Running Graph-based clustering"))
+  # log4r::info(file_logger, paste("Running Graph-based clustering"))
   
-  if (params$correct_method %in% c("cca", "mnn", "harmony") && params$correct_method %in% names(obj@reductions)) {
-    n.dim.use <- min(30, ncol(obj@reductions[[params$correct_method]]))
-    obj <- Seurat::FindNeighbors(obj, dims = 1:n.dim.use, reduction = params$correct_method)
-  } else {
-    n.dim.use <- min(30, ncol(obj@reductions$pca))
-    obj <- Seurat::FindNeighbors(obj, dims = 1:n.dim.use, reduction = "pca")
-  }
+  # if (params$correct_method %in% c("cca", "mnn", "harmony") && params$correct_method %in% names(obj@reductions)) {
+  #   n.dim.use <- min(30, ncol(obj@reductions[[params$correct_method]]))
+  #   obj <- Seurat::FindNeighbors(obj, dims = 1:n.dim.use, reduction = params$correct_method)
+  # } else {
+  #   n.dim.use <- min(30, ncol(obj@reductions$pca))
+  #   obj <- Seurat::FindNeighbors(obj, dims = 1:n.dim.use, reduction = "pca")
+  # }
   
-  log4r::info(file_logger, paste("Running Louvain"))
-  obj <- Seurat::FindClusters(obj, verbose = FALSE)
-  obj@meta.data$bioturing_graph <- as.numeric(obj@meta.data$seurat_clusters)
-  obj@meta.data$bioturing_graph <- factor(
-    paste("Cluster", obj@meta.data$bioturing_graph),
-    levels = paste("Cluster", sort(unique(obj@meta.data$bioturing_graph)))
-  )
+  # log4r::info(file_logger, paste("Running Louvain"))
+  # obj <- Seurat::FindClusters(obj, verbose = FALSE)
+  # obj@meta.data$bioturing_graph <- as.numeric(obj@meta.data$seurat_clusters)
+  # obj@meta.data$bioturing_graph <- factor(
+  #   paste("Cluster", obj@meta.data$bioturing_graph),
+  #   levels = paste("Cluster", sort(unique(obj@meta.data$bioturing_graph)))
+  # )
   
   rhdf5::h5closeAll()
   log4r::info(file_logger, paste("Exporting BCS"))
   rBCS::ExportSeurat(obj, output_path, overwrite=FALSE)
   
   log4r::info(file_logger, paste("Adding metadata from file"))
-  AddMetadataFromFile(arg, output_path, study_id)
+  AddMetadataFromFile(arg, output_path, study_id, file_logger)
   
   log4r::info(file_logger, paste("FINISHED"))
 }
