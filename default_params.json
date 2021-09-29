@@ -7,5 +7,6 @@
   "min.cells": 0,
   "min.features": 0,
   "n_variable_features": 2000,
+  "unit": null,
   "run_batch_subcluster": false
 }

@@ -46,17 +46,17 @@ ReadJSON <- function(filepath, ...) {
   return(jsonlite::fromJSON(raw.content, ...))
 }
 
-RunDiagnostics <- function(study_id, file_logger=NULL) {
+RunDiagnostics <- function(study_id, arg, file_logger=NULL) {
   if (is.null(file_logger)) {
     file_logger = log4r::logger()
   }
   
   log4r::info(file_logger, paste("Running Diagnosis for", study_id))
   study_id <- as.character(study_id)
-  bcs_path <- ConnectPath(output_dir, paste0(study_id, '.bcs'))
-  hdf5_path <- ConnectPath(raw_path, paste0(study_id, '.hdf5'))
+  bcs_path <- ConnectPath(arg$output_dir, paste0(study_id, '.bcs'))
+  hdf5_path <- ConnectPath(arg$raw_path, paste0(study_id, '.hdf5'))
   
-  old_study_path <- ConnectPath(old_data, study_id)
+  old_study_path <- ConnectPath(arg$old_data, study_id)
 
   # Info needed to collect: Processed, Same barcodes, Number of batches, batch_correct, 
   processed <- file.exists(bcs_path)
@@ -65,7 +65,7 @@ RunDiagnostics <- function(study_id, file_logger=NULL) {
   
   old_study_exists <- dir.exists(old_study_path)
   
-  barcodes <- try(readThaoH5Slot(hdf5_path, "/barcodes"))
+  barcodes <- try(ReadBioTuringRawH5Slot(hdf5_path, "/barcodes"))
   if (inherits(barcodes, "try-error")) {
     log4r::info(file_logger, paste("Cannot open hdf5"))
     return(NULL)
@@ -91,7 +91,7 @@ RunDiagnostics <- function(study_id, file_logger=NULL) {
   }
   # same_barcodes <- CheckBarcodeWrapper(study_id)
   
-  run_info <- ReadJSON(ConnectPath(old_data, study_id, "run_info.json"))
+  run_info <- ReadJSON(ConnectPath(arg$old_data, study_id, "run_info.json"))
   
   old_n_batch <- run_info$n_batch
   correct_method <- run_info$ana_setting$batchRemoval
@@ -136,7 +136,7 @@ DiagnoseBatch <- function(output_dir, raw_path, old_data, study_list) {
 
 ## Collect Old run_info.json and compile a list of param
 CollectOldParams <- function(study_id) {
-  info <- RunDiagnostics((study_id))
+  info <- RunDiagnostics(study_id, arg = arg)
   # params <- list()
   # params[[study_id]] <- list(correct_method = info$correct_method, norm_method = info$norm_method, unit=info$unit, old_n_batch=info$old_n_batch)
   return(list(correct_method = info$correct_method, norm_method = info$norm_method, unit=info$unit, old_n_batch=info$old_n_batch))

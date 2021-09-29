@@ -100,8 +100,7 @@ ImportMetadata <- function(arg.json) {
   }
 
   DoProcess <- function() {
-    barcodes <- ReadBioTuringRawH5Slot(arg$raw_h5, "/barcodes")
-    
+    barcodes <- as.character(rhdf5::h5read(ConnectPath(arg$data_path, "matrix.hdf5"), "bioturing/barcodes"))
     meta <- CreateMeta(arg$input_path, arg$type)
     
     omit_columns <- grep("Barcodes", colnames(meta), ignore.case = TRUE)
@@ -238,7 +237,7 @@ AddMetadataFromFile <- function(arg, output_path, study_id) {
   old_dir <- unzip(output_path, list=TRUE)$Name[1]
   import_arg <- list(input_path=ConnectPath(arg$meta_dir, paste0(study_id, '.tsv')),
                   data_path=ConnectPath(old_dir, "/main"),
-                  raw_h5 = GetPath(study_id),
+                  # raw_h5 = GetPath(study_id),
                   output_path= ConnectPath(arg$output_dir, old_dir, 'main/metadata'),
                   type = "single",
                   email = "vu@bioturing.com",
@@ -325,7 +324,7 @@ GetBatchCorrection <- function(study_id, file_logger = NULL) {
 
   log4r::info(file_logger, paste("Batch correction method for this study not given by params, checking number of batch..."))
   
-  info <- RunDiagnostics(study_id)
+  info <- RunDiagnostics(study_id, arg = arg)
   original_n_batch <- info$original_n_batch
   
   if (original_n_batch == 1) {
@@ -773,9 +772,5 @@ GenerateImportArg <- function(study_id, bcs_dir = output_dir, write_dir = "/User
 }
 
 
-# lapply(study_list_4, function(study_id) {
-#   import_arg <- GenerateImportArg(study_id, bcs_dir = "/mnt2/vu/script/output/")
-#   jsonlite::write_json(import_arg, ConnectPath(OUTPUT_DIR, paste0(study_id, '.json')))
-# })
 
 # TODO: Catch more messages to log.
