@@ -84,8 +84,8 @@ RunPipeline <- function(study_id, arg, add_meta = FALSE) {
   obj <- Preprocess(obj, params, file_logger, arg$seed)
   obj <- ReduceDimension(obj, params, file_logger, arg$seed)
   obj <- FindClusters(obj, file_logger, params)
-  obj@meta.data <- data.frame(
-                    bioturing_graph = paste("Cluster", as.numeric(obj@meta.data$seurat_clusters)))
+  # obj@meta.data <- data.frame(
+  #                   bioturing_graph = paste("Cluster", as.numeric(obj@meta.data$seurat_clusters)))
   
   rhdf5::h5closeAll()
   log4r::info(file_logger, paste("Exporting BCS"))

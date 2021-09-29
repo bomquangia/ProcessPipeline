@@ -241,8 +241,7 @@ GenerateImportArg <- function(study_id, bcs_dir = output_dir, write_dir = "/User
   import_arg$batch_names <- NULL
   import_arg$input_id <- c(uuid::UUIDgenerate())
   
-  correct_method <- GetBatchCorrection(study_id)
-  import_arg$correct_method <- ifelse(correct_method != "none", "harmony", "none") #Study in production could have "cca" "mnn" as correct_method, but for this pipeline, we only use Harmony
+  import_arg$correct_method <- GetBatchCorrection(study_id)
   
   import_arg$type <- c("bcs")
   import_arg$unit <- GetUnit(study_id) # TODO: Check this again
