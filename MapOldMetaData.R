@@ -75,6 +75,7 @@ RunDiagnostics <- function(study_id, arg, file_logger=NULL) {
 
   original_n_batch <- length(unique(studyInfo$batch))
   hasADT = sum(studyInfo$ADT_indices) > 0
+  filter <- list(gene = c(0,0), mito=100, top =2000, cell=0)
   if (!old_study_exists) {
     log4r::info(file_logger, paste("Either Old study zip not available, or unzip went wrong"))
 
@@ -87,9 +88,9 @@ RunDiagnostics <- function(study_id, arg, file_logger=NULL) {
       correct_method= NULL,
       norm_method = NULL,
       hasADT = hasADT,
-      unit = NULL))
+      unit = NULL,
+      filter = NULL))
   }
-  # same_barcodes <- CheckBarcodeWrapper(study_id)
   
   run_info <- ReadJSON(ConnectPath(arg$old_data, study_id, "run_info.json"))
   
@@ -101,6 +102,8 @@ RunDiagnostics <- function(study_id, arg, file_logger=NULL) {
   if (is.null(unit)) {
     unit <- run_info$ana_setting$unit
   }
+  
+  filter <- GetAnalysisSettings(study_id, arg)$filter
 
   return(list(
     study_id=study_id,
@@ -111,8 +114,20 @@ RunDiagnostics <- function(study_id, arg, file_logger=NULL) {
     correct_method=correct_method,
     norm_method = norm_method,
     hasADT = hasADT,
-    unit = unit)
+    unit = unit,
+    filter = filter)
     )
+}
+
+GetAnalysisSettings <- function(study_id, arg) {
+  # Get run_info$ana_settings from old studies
+  old_study_path <- ConnectPath(arg$old_data, study_id)
+  if (!dir.exists(old_study_path)) {
+    print("Old study folder not found, please make sure that it is present at `arg$old_data`/study_id")
+    return(NULL)
+  }
+  run_info <- ReadJSON(ConnectPath(old_study_path, 'run_info.json'))
+  return(run_info$ana_setting)
 }
 
 DiagnoseBatch <- function(output_dir, raw_path, old_data, study_list) {
@@ -135,8 +150,9 @@ DiagnoseBatch <- function(output_dir, raw_path, old_data, study_list) {
 # diagnosis <- DiagnoseBatch(output_dir, raw_path, old_data, study_list)
 
 ## Collect Old run_info.json and compile a list of param
-CollectOldParams <- function(study_id) {
+CollectOldParams <- function(study_id, arg) {
   info <- RunDiagnostics(study_id, arg = arg)
+  ana_settings <- GetAnalysisSettings()
   # params <- list()
   # params[[study_id]] <- list(correct_method = info$correct_method, norm_method = info$norm_method, unit=info$unit, old_n_batch=info$old_n_batch)
   return(list(correct_method = info$correct_method, norm_method = info$norm_method, unit=info$unit, old_n_batch=info$old_n_batch))
