@@ -1,0 +1,6828 @@
+{
+  "GSE128423_MLL": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE123022": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE123024": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE123025": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE123139": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE123814_BCC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE123814_SCC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE123904_human": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE124310": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      32
+    ]
+  },
+  "GSE124335": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE124395": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE124472_15wk": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE124472_17wk": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE124472_kidney_organoid": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      4
+    ]
+  },
+  "GSE125449": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE125527": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE125881": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE125970": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      6
+    ]
+  },
+  "GSE126030": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      16
+    ]
+  },
+  "GSE126783": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE126836_BNST": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE126836_BNST_region": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE126836_SN": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      7
+    ]
+  },
+  "GSE127465_human": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      26
+    ]
+  },
+  "GSE127465_mouse": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      14
+    ]
+  },
+  "GSE127471": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE128033": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE128169_cite": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  },
+  "GSE128169": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      13
+    ]
+  },
+  "GSE128223": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      8
+    ]
+  },
+  "GSE128423_steady_state": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE128518_10x_human": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE128518_db_mouse": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE128518_mars_seq_human": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE128518_trem2ko_mouse": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE128518_wt_mouse": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE128565": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      7
+    ]
+  },
+  "GSE129455_FibroEnriched": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE129455_Viable_cell": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE129516": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      6
+    ]
+  },
+  "GSE130148": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE130430": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      9
+    ]
+  },
+  "GSE130973": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE131391": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE131535": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE131685": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE131776": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE131778": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE131834_bm": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE131834_liver": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "jonas_et_al_2020_rhapsody_monocyte": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "jonas_et_al_2020_rhapsody_neutrophil": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "jonas_et_al_2020_rhapsody_pbmc": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "lake2016": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "macosko2015": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "madissoon2020_esophagus": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "madissoon2020_lung": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "madissoon2020_spleen": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "maier2020": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Maynard_et_al_2020": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "MOCA_2M": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  },
+  "MouseRetina": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "mulder_et_al_2021_mnp": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  },
+  "mulder_et_al_2021_momac": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  },
+  "mulder_et_al_2021_ss2": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "tpm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Nathan_et_al_2020": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "read"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "olah_et_al_2020": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      17
+    ]
+  },
+  "park_et_al_2020_epi": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "park_et_al_2020_hsc": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "park_et_al_2020_mouse_stromal": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "park_et_al_2020_mouse_thymus": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "park_et_al_2020_t": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "park_et_al_2020_thymus": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  },
+  "peng2019": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "PRJNA544731": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Qian_et_al_2020_BC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Qian_et_al_2020_B": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      4
+    ]
+  },
+  "Qian_et_al_2020_CRC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Qian_et_al_2020_DC": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      4
+    ]
+  },
+  "Qian_et_al_2020_EC": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      4
+    ]
+  },
+  "Qian_et_al_2020_Fib": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      4
+    ]
+  },
+  "Qian_et_al_2020_LC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Qian_et_al_2020_Mast": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      3
+    ]
+  },
+  "Qian_et_al_2020_Myeloid": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      4
+    ]
+  },
+  "Qian_et_al_2020_OvC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Qian_et_al_2020_T_NK": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      4
+    ]
+  },
+  "Reynold_et_al_2021_adult_dermis": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Reynolds_et_al_2021_adult_apc": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Reynolds_et_al_2021_adult_epidermal": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Reynolds_et_al_2021_adult_lymphoid_mast": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Reynolds_et_al_2021_fetal": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "roider2019": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      12
+    ]
+  },
+  "Sathe_et_al_2020": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      22
+    ]
+  },
+  "SC2018": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "SCP1038_human_colon": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      3
+    ]
+  },
+  "SCP1038_mouse_colon_ENS": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "tpm"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "SCP1038_mouse_colon_neuron_glia": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "SCP1038_mouse_colon_total": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  },
+  "SCP1038_mouse_ileum": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      3
+    ]
+  },
+  "SCP1288": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE161195_cell_line_invitro": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE162054_HC_AD": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      9
+    ]
+  },
+  "GSE162054_SHAD_AD": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      8
+    ]
+  },
+  "GSE164551": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      8
+    ]
+  },
+  "GSE67835": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE72056": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE74672": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE76381_ES": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE76381_human_embryo": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE76381_iPSC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE76381_mouse_adult_sample": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE76381_Mouse_Embryo": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE77067_sn": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "tpm"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE77067_whole_cell": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "tpm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE83139": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE84465": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE85241": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE92332_atlas": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE92332_atlas_ss2": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "tpm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE92332_enteroendocrine": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE92332_FAE": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE92332_large": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE92332_org": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE92332_pathogen": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE92332_pathogen_ss2": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "tpm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE92332_regional": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE92332_Salmonella": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE94820_deeper_characteristic_phase": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "tpm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE94820_discovery_phase": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "tpm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE97168": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE97693_FPKM": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "fpkm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE97693": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "tpm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE97930": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      3
+    ]
+  },
+  "GSE98638": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE98969": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE99254": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "habib2017_2": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": null,
+    "old_n_batch": [
+      1
+    ]
+  },
+  "habib2017": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "harris2018": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Hong_et_al_2020": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "hornburg_et_al_2021_all": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      44
+    ]
+  },
+  "hu2017": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "hurley_et_al_2020_alveolospheres": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "hurley_et_al_2020_lentiviral": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "hurley_et_al_2020_timeseries": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Ishizuka2018": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "james2020": {
+    "correct_method": [
+      "mnn"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      5
+    ]
+  },
+  "jonas_et_al_2020_10x_neutrophil": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "jonas_et_al_2020_10x_pbmc": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "jonas_et_al_2020_rhapsody_freshwb": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE154763_MYE": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE154763_OV_FTC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE154763_PAAD": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE154763_THCA": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE154763_UCEC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE154775": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      9
+    ]
+  },
+  "GSE154778": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      16
+    ]
+  },
+  "GSE155288": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE155698": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      20
+    ]
+  },
+  "GSE155698_PBMC": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      21
+    ]
+  },
+  "GSE155850": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      4
+    ]
+  },
+  "GSE155882": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      8
+    ]
+  },
+  "GSE156498": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE156793_adrenal": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE156793_blood": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE156793_cerebellum": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  },
+  "GSE156793_cerebrum": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  },
+  "GSE156793_endothelial": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE156793_epithelial": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE156793_eye": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE156793_heart": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE156793_intestine": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE156793_kidney": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE156793_liver": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE156793_lung": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE156793_muscle": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE156793_pancreas": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE156793_placenta": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE156793_sampled": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE156793_spleen": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE156793_stomach": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE156793_thymus": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE157278": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE157477_iel": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      5
+    ]
+  },
+  "GSE157477_lp": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      6
+    ]
+  },
+  "GSE157783_harmony": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      11
+    ]
+  },
+  "GSE157829": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      7
+    ]
+  },
+  "GSE157990": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE158432_GSE153760": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      19
+    ]
+  },
+  "GSE160269_b": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE160269_cd45_neg": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE160269_cd45_pos": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE160269_endothelial": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE160269_fibroblast": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE160269_myeloid": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE160269_t": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE160536": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE160938_all": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE160938_neuron": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE160938_no_nts": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE139891_GC3_CITEseq": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE139891_GCB": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE139891_LZ": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE140228_10X": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE140228_smartseq2": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE140819_CLL": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE140819_glioma": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE140819_MBC": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      10
+    ]
+  },
+  "GSE140819_Melanoma": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE140819_NB": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      10
+    ]
+  },
+  "GSE140819_NSCLC": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      5
+    ]
+  },
+  "GSE140819_Ovarian": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      5
+    ]
+  },
+  "GSE140819_Sarcoma": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      4
+    ]
+  },
+  "GSE142581": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      11
+    ]
+  },
+  "GSE143317": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE143363": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE143423_lung": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      3
+    ]
+  },
+  "GSE144136": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE144469_CD3": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      22
+    ]
+  },
+  "GSE144469_CD45": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      16
+    ]
+  },
+  "GSE144735": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE145281_BT": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE145281_RN": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE145926": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE146026_10X": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE146026_SS2": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE146264": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE146771_10x": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE146771_smartseq": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE146799": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE146811_human": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE146811_mouse": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE147066": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE147424": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      17
+    ]
+  },
+  "GSE147671_GSE156231": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE147671_GSE156232": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      8
+    ]
+  },
+  "GSE147671_GSE157711_GSE160711": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      4
+    ]
+  },
+  "GSE148071": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      42
+    ]
+  },
+  "GSE148077": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      7
+    ]
+  },
+  "GSE148729_H1299": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE148729": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE148837_cite": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE148837": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      6
+    ]
+  },
+  "GSE150430": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE153647": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE153760": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      15
+    ]
+  },
+  "GSE154763_cDC2": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE154763_ESCA": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE154763_KIDNEY": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE154763_LYM": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE131882": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      6
+    ]
+  },
+  "GSE131907": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE131957_mouse": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE132042": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  },
+  "GSE132164": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      9
+    ]
+  },
+  "GSE132465": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE132662_invitro": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      3
+    ]
+  },
+  "GSE132662_invivo": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      6
+    ]
+  },
+  "GSE132758": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE132771_human": {
+    "correct_method": [
+      "mnn"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      16
+    ]
+  },
+  "GSE132771_mouse": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      8
+    ]
+  },
+  "GSE133382": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      3
+    ]
+  },
+  "GSE133433": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      4
+    ]
+  },
+  "GSE133549_human_hamony": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      13
+    ]
+  },
+  "GSE133549_human_reference": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE133549_mouse_hamony": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      11
+    ]
+  },
+  "GSE133549_mouse_reference": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE134144_juvenile": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE134144_transfemale": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE134174_invitro": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE134174_invivo": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE134520": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      13
+    ]
+  },
+  "GSE134809": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      22
+    ]
+  },
+  "GSE135133": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      11
+    ]
+  },
+  "GSE135325_10X": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE135325_main": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE135325_stim": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE135325_sub": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE135437_control": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE135437_gbm": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE135710_human": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE135710_mouse": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE135893": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE135922_all": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      6
+    ]
+  },
+  "GSE135922_EC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      8
+    ]
+  },
+  "GSE136103_human": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE136103_mouse": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE136831": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  },
+  "GSE137398": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      7
+    ]
+  },
+  "GSE137537": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE137846": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE137912": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      11
+    ]
+  },
+  "GSE138266": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": null,
+    "old_n_batch": [
+      12
+    ]
+  },
+  "GSE138852": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE139107": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      6
+    ]
+  },
+  "GSE139125": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE139324": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": null
+  },
+  "GSE139369": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      16
+    ]
+  },
+  "GSE139555": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "unknown"
+    ],
+    "old_n_batch": null
+  },
+  "GSE139891_DZ": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "SCP498": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "SCP550": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "SDY997": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "SDY997_landscape": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "SDY998": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Sharma_14HCC_and_fetal_liver": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Sharma_14HCC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Singer2016": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "smillie2019.dv.epi": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "smillie2019.dv.fibroblast": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "smillie2019.dv.imm": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "smillie2019.epi": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "smillie2019.fibroblast": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "smillie2019.imm": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "sonya2018": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "spatial_libd_2021": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      12
+    ]
+  },
+  "stewart2019_fetal": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "stewart2019_mature": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "tabib2018": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "TabulaMuris_droplet": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "TabulaMuris_facs": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "TabularMurisSenis_droplet": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  },
+  "TabularMurisSenis_facs": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  },
+  "tasic2018": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "tikhonova2019": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Travaglini2020_10X": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Travaglini2020_SS2": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "vanlandewijck2018_brain_astrocyte": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "vanlandewijck2018_brain_lung": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      3
+    ]
+  },
+  "vanlandewijck2018": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "ventotormo2018": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "wu2018.biopsy": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "wu2018.healthy": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Wu_et_al_2020": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Yann_Kiefer_et_al_2020": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "young2018": {
+    "correct_method": [
+      "mnn"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      11
+    ]
+  },
+  "zeisel2015": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE134355_other": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE134355_adult": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      56
+    ]
+  },
+  "GSE134355_fetal": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      47
+    ]
+  },
+  "GSE161195_GSE117156_all": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE161195_GSE117156_un_pre_treat": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE97310_20weeks": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE97310_control_and_11weeks": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "MCA": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  },
+  "SCP548": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE154826_rna": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  },
+  "GSE154826_rna_adt": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE117403": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      3
+    ]
+  },
+  "kotliarov2020": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "read"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "10x_V1_Adult_Mouse_Brain": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "AN1801": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Angelidis2018": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "ayse_et_al_2021_cohort1_all": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "ayse_et_al_2021_cohort1_dc": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "ayse_et_al_2021_cohort1_mye": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "ayse_et_al_2021_cohort1_t": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "ayse_et_al_2021_cohort2_all": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "boldog2018": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "tpm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "chen_et_al_2020_all": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "chen_et_al_2020_fibroblast": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "chen_et_al_2020_myeloid": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Cheng_et_al_2018": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "chua2020": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "chua2020_upper_lower": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "couturier_et_al_2020_fetal": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "couturier_et_al_2020_gsc": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      6
+    ]
+  },
+  "couturier_et_al_2020_wt": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      17
+    ]
+  },
+  "Cowan_et_al_2020_DO": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Cowan_et_al_2020_FR": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Cowan_et_al_2020_PR": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "deprez2019": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Dobie2019_fig1": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Dobie2019_fig3": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Dobie2019_fig5": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "Dobie2019_figS3": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "dropviz.cerebellum": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": null,
+    "old_n_batch": [
+      1
+    ]
+  },
+  "dropviz.entopeduncular": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": null,
+    "old_n_batch": [
+      1
+    ]
+  },
+  "dropviz.frontalcortex": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": null,
+    "old_n_batch": [
+      1
+    ]
+  },
+  "dropviz.globuspallidus": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": null,
+    "old_n_batch": [
+      1
+    ]
+  },
+  "dropviz.hippocampus": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": null,
+    "old_n_batch": [
+      1
+    ]
+  },
+  "dropviz.posteriorcortex": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": null,
+    "old_n_batch": [
+      1
+    ]
+  },
+  "dropviz.striatum": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": null,
+    "old_n_batch": [
+      1
+    ]
+  },
+  "dropviz.substantianigra": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": null,
+    "old_n_batch": [
+      1
+    ]
+  },
+  "dropviz.thalamus": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": null,
+    "old_n_batch": [
+      1
+    ]
+  },
+  "E_MTAB_5061": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "E-MTAB-6149_all": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "E-MTAB-6149_alveolar": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "E-MTAB-6149_b": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "E-MTAB-6149_endothelial": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "E-MTAB-6149_fibroblasts": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "E-MTAB-6149_myeloid": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "E-MTAB-6149_t": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "E_MTAB_6308": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  },
+  "E_MTAB_6967": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "E_MTAB_6970": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "E-MTAB-7311": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "E_MTAB_7324": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "E_MTAB_7325": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "E-MTAB-7407_fetal_liver": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      4
+    ]
+  },
+  "E-MTAB-7407_skin_kidney": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      4
+    ]
+  },
+  "E_MTAB_7458": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  },
+  "E_MTAB_8077": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "E_MTAB_8322": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "E-MTAB-8483": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "cpm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "E-MTAB-9154": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      6
+    ]
+  },
+  "E_MTAB_9492": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "fernandez_et_al_2019_citeseq": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "fernandez_et_al_2019_scrna_mac_pl": {
+    "correct_method": [
+      "mnn"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      5
+    ]
+  },
+  "fernandez_et_al_2019_scrna_t_pl": {
+    "correct_method": [
+      "mnn"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      6
+    ]
+  },
+  "ffpe_prostate_cancer": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "ffpe_prostate_normal": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE100337": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE102580_human_cultured": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE102580_human_transduced": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE102580_mouse_all": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE102580_mouse_uninjured": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE103322": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE103334": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "fpkm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE103892": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE104276": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE106510_CD45_MHCIIGut_all_UMIcounts": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE106510_CD45_Salmonella_UMIcounts": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE106510_Foxp3_all_UMIcounts": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE106510_MHCII_antibody_all_UMIcounts": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE106510_MHCII_dGut_all_UMIcounts": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE106510_Nude_UMIcounts": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE106510_TcellCyto_Orgs_UMIcounts_dropNA": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE106510_TCRb_KO_UMIcount": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE107618": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "tpm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE108892-GSE118436": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE108989": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE109761_hu": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE109761_mm": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE109822": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE110686": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE111672_A": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE111672_B": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE111672": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE111894": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "tpm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE111896": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE112903": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE113973": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      6
+    ]
+  },
+  "GSE114374": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE114725": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      8
+    ]
+  },
+  "GSE114727": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      5
+    ]
+  },
+  "GSE115011": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      3
+    ]
+  },
+  "GSE115571": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE115795": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE115978": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE115978_resistance": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE116222": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      9
+    ]
+  },
+  "GSE116256": {
+    "correct_method": [
+      "unknown"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE116481": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  },
+  "GSE117156": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      135
+    ]
+  },
+  "GSE117570": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      8
+    ]
+  },
+  "GSE117872": {
+    "correct_method": [
+      "cca"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118184_adult_sn": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118184_bdnf_inhibitor": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118184": {
+    "correct_method": [
+      "mnn"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      10
+    ]
+  },
+  "GSE118184_organoid_timecourse": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118257": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118390": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "tpm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118412_after_grafting": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118412_before_grafting": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118480_fov_AC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118480_fov_BC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118480_fov_HC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118480_fov_NN": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118480_fov_PR": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118480_fov_RGC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118480_per_AC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118480_per_BC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118480_per_HC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118480_per_NN": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118480_per_PR": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118480_per_RGC": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118614_NFI": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118614_smart_seq2": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118900": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "tpm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE118948": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE119212": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE119352": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      4
+    ]
+  },
+  "GSE119943_BMC": {
+    "correct_method": [
+      "unknown"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE119943_P14_2_batches": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      8
+    ]
+  },
+  "GSE119943_P14": {
+    "correct_method": [
+      "unknown"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE120575": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE120629": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE120744": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE120745": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE121380": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      11
+    ]
+  },
+  "GSE121611_cryobiopsy": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE121611_epithelial": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      16
+    ]
+  },
+  "GSE121611": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      16
+    ]
+  },
+  "GSE121611_lung": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      2
+    ]
+  },
+  "GSE121611_macrophages": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      16
+    ]
+  },
+  "GSE121654": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      41
+    ]
+  },
+  "GSE121654_percoll": {
+    "correct_method": [
+      "harmony"
+    ],
+    "norm_method": [
+      "lognorm"
+    ],
+    "unit": [
+      "umi"
+    ],
+    "old_n_batch": [
+      6
+    ]
+  },
+  "GSE121861": {
+    "correct_method": [
+      "none"
+    ],
+    "norm_method": [
+      "none"
+    ],
+    "unit": [
+      "lognorm"
+    ],
+    "old_n_batch": [
+      1
+    ]
+  },
+  "GSE121862": {
+    "correct_method": null,
+    "norm_method": null,
+    "unit": null,
+    "old_n_batch": null
+  }
+}
