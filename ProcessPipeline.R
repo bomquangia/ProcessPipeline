@@ -2,16 +2,13 @@ source("/mnt2/vu/script/ProcessPipeline/AddClonotype.R")
 source("/mnt2/vu/script/ProcessPipeline/BatchCorrection.R")
 source("/mnt2/vu/script/ProcessPipeline/FindClusters.R")
 source("/mnt2/vu/script/ProcessPipeline/ImportMetadata.R")
-# source("/mnt2/vu/script/ProcessPipeline/MapOldMetaData.R")
 source("/mnt2/vu/script/ProcessPipeline/MatchBarcodes.R")
 source("/mnt2/vu/script/ProcessPipeline/ReduceDimension.R")
 source("/mnt2/vu/script/ProcessPipeline/Utils.R")
 
-
 RunPipeline <- function(study_id, arg, add_meta = FALSE) {
   RAW_PATH <- arg$raw_path
   OUT_DIR <- arg$output_dir
-  OLD_DATA <- arg$old_data
 
   filepath <- ConnectPath(RAW_PATH, paste0(study_id, '.hdf5'))
   output_path <- ConnectPath(OUT_DIR, paste0(study_id, '.bcs'))
@@ -37,9 +34,8 @@ RunPipeline <- function(study_id, arg, add_meta = FALSE) {
   log4r::info(file_logger, paste("Processing:", study_id))
   SanityCheck(filepath, file_logger)
 
-  params <- GetParams(study_id, arg)
-
   count_data <- ReadMtxFromBioTuringRawH5(filepath)
+  params <- GetParams(study_id, arg, estimate_perplexity = TRUE, n_data=ncol(count_data))
   
   ft <- rownames(count_data)
   if (IsEnsemblID(ft)) {
@@ -84,12 +80,16 @@ RunPipeline <- function(study_id, arg, add_meta = FALSE) {
   obj <- Preprocess(obj, params, file_logger, arg$seed)
   obj <- ReduceDimension(obj, params, file_logger, arg$seed)
   obj <- FindClusters(obj, file_logger, params)
-  # obj@meta.data <- data.frame(
-  #                   bioturing_graph = paste("Cluster", as.numeric(obj@meta.data$seurat_clusters)))
+  
+  obj@meta.data$bioturing_nCount <- obj@meta.data$nCount_RNA
+  obj@meta.data$bioturing_nFeature <- obj@meta.data$nFeature_RNA
+  
+  keep_columns <- !colnames(obj@meta.data) %in% c("orig.ident", "seurat_clusters", "RNA_snn_res.0.8", "nCount_RNA", "nCount_ADT", "nFeature_RNA", "nFeature_ADT")
+  obj@meta.data <- obj@meta.data[, keep_columns]
   
   rhdf5::h5closeAll()
   log4r::info(file_logger, paste("Exporting BCS"))
-  rBCS::ExportSeurat(obj, output_path, overwrite=FALSE)
+  rBCS::ExportSeurat(obj, output_path, author = "support@bioturing.com", clustering.name = "bioturing_graph", overwrite=FALSE)
   
   log4r::info(file_logger, paste("Adding metadata from file"))
   AddMetadataFromFile(arg, output_path, study_id, file_logger)

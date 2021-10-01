@@ -37,7 +37,7 @@ GetUnit <- function(study_id, file_logger=NULL) {
     return("not umi")
   }
   log4r::info(file_logger, paste("Count unit is integer. Assuming that they are UMI"))
-  return("umi")  
+  return("umi")
 }
 
 CombineParam <- function(default_params, study_params) {
@@ -58,13 +58,24 @@ CombineParam <- function(default_params, study_params) {
   return(study_params)
 }
 
-GetParams <- function(study_id, arg, harmony_only = TRUE) {
+EstimatePerplexity <- function(n) {
+  return(min(max(round(n / 100), 2), 30))
+}
+
+GetParams <- function(study_id, arg, harmony_only = TRUE, estimate_perplexity = FALSE, n_data = NULL) {
   params <- CombineParam(arg$default_params, arg$old_study_params[[study_id]])
   
   # All studies requiring batch correction will only use harmony to save computation
   # unless it is specifically overwritten in arg$manual_params
   if (harmony_only) {
     params$correct_method <- ifelse(params$correct_method != "none", "harmony", "none")
+  }
+  
+  if (estimate_perplexity) {
+    print("Estimating perlexity...")
+    print(paste("Before:", params$perplexity))
+    params$perplexity <- EstimatePerplexity(n_data)
+    print(paste("After:", params$perplexity))
   }
 
   params <- CombineParam(params, arg$manual_params[[study_id]])
@@ -249,17 +260,15 @@ GenerateImportArg <- function(study_id, bcs_dir = output_dir, write_dir = "/User
   import_arg$species <- info$species
   import_arg$log_path <- ConnectPath(write_dir, study_id, "tmp/submit.log")
   import_arg$dimred_method <- c("tsne", "umap")
-  import_arg$dimred_perplexity <- 0
-  import_arg$dimred_mode <- "slow"
+  import_arg$dimred_perplexity <- 0 #fake
+  import_arg$dimred_mode <- "slow" #fake
   import_arg$quant <- list(method = "unknown", ref = "unknown")
   import_arg$seed <- 2409
   import_arg$platform <- "unknown"
-  import_arg$filter <- list(cell=0, gene = c(0,0), mito = 100, top = 2000)
+  import_arg$filter <- list(cell=0, gene = c(0,0), mito = 100, top = 2000) #fake
   import_arg$subcluster <- "none"
   import_arg$db_path <- "/Users/bioturing/.BioTBData/App/Model"
-  # import_arg$db_path <- "_$_DB_MODEL_PATH_$_/"
   import_arg$output_path <- ConnectPath(write_dir, study_id, "main")
-  # import_arg$output_path <- ConnectPath("_$_PRIVATE_USER_STUDIES_PATH_$_/vu@bioturing.com", study_id, "main")
   import_arg$create_adt_gallery <- TRUE
   import_arg$refIndex <- "unknown"
   import_arg$hash_id <- uuid::UUIDgenerate()
