@@ -14,20 +14,20 @@ Preprocess <- function(data, params, logger, seed) {
     data <- FindVariableFeatures(data)
     data <- Seurat::ScaleData(data, features = GetVariableFeatures(data, params), verbose = FALSE)
     data <- RunPCA(data, params, logger, seed)
-    data <- harmony::RunHarmony(data, "bioturing_batch", plot_convergence = FALSE, verbose = FALSE, epsilon.harmony = -Inf, max.iter.harmony = 30)
+    data <- harmony::RunHarmony(data, "Batch", plot_convergence = FALSE, verbose = FALSE, epsilon.harmony = -Inf, max.iter.harmony = 30)
     return(data)
   }
 
   CorrectCca <- function(data) {
     log4r::info(logger, paste('Running CCA'))
-    objects <- Seurat::SplitObject(data, split.by = "bioturing_batch")
+    objects <- Seurat::SplitObject(data, split.by = "Batch")
     misc <- data@misc
     objects <- lapply(objects, function(obj) {
       obj <- Seurat::NormalizeData(obj, verbose = FALSE)
       obj <- Seurat::FindVariableFeatures(obj, selection.method = "vst",
                                           nfeatures = params$n_variable_features, verbose = FALSE)
     })
-    batches <- levels(data@meta.data$bioturing_batch)
+    batches <- levels(data@meta.data$Batch)
     ncol.list <- sapply(objects, ncol)
     if (any(ncol.list < 30)) {
       stop("At least one batch < 30 cells")
@@ -42,14 +42,14 @@ Preprocess <- function(data, params, logger, seed) {
     data <- Seurat::IntegrateData(anchorset = anchors, dims = 1:30, verbose = FALSE)
     data@assays$RNA@meta.features$bioturing_name <- objects[[1]]@assays$RNA@meta.features$bioturing_name # Recover gene name
     data@misc <- misc
-    data@meta.data$bioturing_batch <- factor(data@meta.data$bioturing_batch, levels=batches)
+    data@meta.data$Batch <- factor(data@meta.data$Batch, levels=batches)
     return(data)
   }
 
   CorrectMnn <- function(data) {
     data <- FindVariableFeatures(data)
-    mnn.arg <- lapply(unique(data@meta.data$bioturing_batch), function(i) {
-      data@assays$RNA@data[GetVariableFeatures(data, params), data@meta.data$bioturing_batch == i]
+    mnn.arg <- lapply(unique(data@meta.data$Batch), function(i) {
+      data@assays$RNA@data[GetVariableFeatures(data, params), data@meta.data$Batch == i]
     })
     mnn.arg$k <- 30
     mnn.arg$cos.norm <- FALSE
@@ -63,7 +63,7 @@ Preprocess <- function(data, params, logger, seed) {
   CorrectBatchEffect <- function(data) {
     # logger$cat("Removing batch effect with", terms$correct[[arg$correct_method]])
     log4r::info(logger, paste("Removing batch effect with", params$correct_method))
-    batch.invalid = table(data@meta.data$bioturing_batch) < 5
+    batch.invalid = table(data@meta.data$Batch) < 5
     if (any(batch.invalid)) {
       batch.name <- names(batch.invalid)[batch.invalid]
       stop("Too few cells (fewer than 5 cells) in batch(s) ", paste(batch.name, collapse=", "))

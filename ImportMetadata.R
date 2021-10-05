@@ -35,7 +35,7 @@ ImportMetadata <- function(arg.json, file_logger) {
       }
     }
     meta2 <- as.data.frame(meta2, check.names=FALSE, stringsAsFactors=FALSE)
-
+    colnames(meta2) <- paste0(colnames(meta2),'(bioturing)')
     return(meta2)
   }
 
@@ -203,6 +203,32 @@ AddMetadataFromFile <- function(arg, output_path, study_id, file_logger=NULL) {
                   unique_limit = 100,
                   bbrowser_version = "2.9.23")
   ImportMetadata(jsonlite::toJSON(import_arg), file_logger)
+  zip::zip(paste0(study_id, '.bcs'), old_dir, compression_level=1)
+  unlink(old_dir, recursive = TRUE)
+}
+
+RenameOriginalMetadata <- function(output_dir, output_path, study_id) {
+  special.names <- c('bioturing_nCount', 'bioturing_nFeature', "Graph-based clusters", "Batch")
+  pretty.names <- c('Total Count', "Total expressed feature", "Graph-based clusters", "Batch")
+  setwd(output_dir)
+  unzip(output_path, exdir = output_dir, unzip="unzip")
+  old_dir <- unzip(output_path, list=TRUE)$Name[1]
+  meta_path <- ConnectPath(old_dir, 'main/metadata/metalist.json')
+  metalist <- ReadJSON(meta_path)
+  
+  for (i in seq(1:length(metalist$content))) {
+    meta <- metalist$content[[i]]
+    if (meta$name %in% special.names) {
+      j <- match(meta$name, special.names)
+      meta$name <- pretty.names[[j]]
+    } else {
+      meta$name <- paste0(meta$name, '(raw)')
+    }
+    metalist$content[[i]] <- meta
+  }
+  
+  WriteJSON(list(content=metalist$content, version=1), meta_path, auto_unbox=TRUE)
+
   zip::zip(paste0(study_id, '.bcs'), old_dir, compression_level=1)
   unlink(old_dir, recursive = TRUE)
 }
