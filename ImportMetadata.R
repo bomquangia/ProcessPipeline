@@ -209,7 +209,7 @@ AddMetadataFromFile <- function(arg, output_path, study_id, file_logger=NULL) {
 
 RenameOriginalMetadata <- function(output_dir, output_path, study_id) {
   special.names <- c('bioturing_nCount', 'bioturing_nFeature', "Graph-based clusters", "Batch")
-  pretty.names <- c('Total Count', "Total expressed feature", "Graph-based clusters", "Batch")
+  pretty.names <- c('Total count', "Total expressed feature", "Graph-based clusters", "Batch")
   setwd(output_dir)
   unzip(output_path, exdir = output_dir, unzip="unzip")
   old_dir <- unzip(output_path, list=TRUE)$Name[1]
